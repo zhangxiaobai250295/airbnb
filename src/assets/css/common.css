@@ -1,0 +1,23 @@
+html,body{
+  font: 14px/1.5 Helvetica,Tahoma,Arial,"Hiraino Sans GB","Microsoft YaHei ",SimSun,Heiti,sans-serif;
+  color: #515151;
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.clearfix:after{
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+}
+.wrapper{
+  width: 1032px;
+  margin: 0 auto;
+}
+a{
+  text-decoration: none;
+}
