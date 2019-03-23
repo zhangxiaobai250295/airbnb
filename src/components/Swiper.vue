@@ -63,13 +63,6 @@
         activeIndex: 0
       };
     },
-    computed: {
-      zIndex () {
-        return {
-          zIndex: 2
-        };
-      }
-    },
     methods: {
       move () {
         clearInterval(this.timer);
