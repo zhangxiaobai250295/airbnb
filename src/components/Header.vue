@@ -7,7 +7,7 @@
       <div class="box" :class="{'box-long':this.showSearchList}">
         <span class="iconfont icon">&#xe651;</span>
         <input type="text" class="text" placeholder='搜"吉隆坡"试试' @blur="search('blur')" @focus="search('focus')">
-        <div class="search-list" :class="{'show-search-list':this.showSearchList}" v-if="this.showSearchList">
+        <div class="search-list" :class="{'show-search-list':this.showSearchList === 1}" v-if="this.showSearchList">
           最近的搜索
           <ul>
             <li class="list-item">
@@ -88,8 +88,14 @@
       search (type) {
         if (type === 'blur') {
           this.showSearchList = false;
+          setTimeout(() => {
+            this.showSearchList = 0;
+          }, 100);
         } else {
           this.showSearchList = true;
+          setTimeout(() => {
+            this.showSearchList = 1;
+          }, 100);
         }
       }
     },

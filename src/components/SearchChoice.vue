@@ -15,7 +15,7 @@
               <div class="select-item fl" v-for="(item,index) in data" :key="index">
                 <a href="javascript:;" class="title">{{item.title}}</a>
                 <ul class="list-wrap clearfix">
-                  <li class="fl" v-for="(info,list) in item.children" :key="list" @click.stop="changeCity(info)">
+                  <li class="fl" v-for="(info,list) in item.children" :key="list" @mousedown="changeCity(info)">
                     <a href="javascript:;">{{info.city}}</a>
                   </li>
                 </ul>

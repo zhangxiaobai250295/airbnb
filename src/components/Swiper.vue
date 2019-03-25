@@ -11,33 +11,11 @@
           </div>
         </a>
       </li>
-      <!--<li class="list-item" >-->
-        <!--<a href="javascript:;" class="item-warp">-->
-          <!--<img src="../assets/images/banner2.jpg" alt="">-->
-          <!--<div class="content">-->
-            <!--<span class="title">48 小时踏青玩个够<p>领取礼券 扑向春天</p></span>-->
-            <!--<p class="desc">挑个周末逃离恒温都市，让初春叫醒你</p><br>-->
-            <!--<a href="javascript:;" class="btn">查看集合</a>-->
-          <!--</div>-->
-        <!--</a>-->
-      <!--</li>-->
-      <!--<li class="list-item">-->
-        <!--<a href="javascript:;" class="item-warp">-->
-          <!--<img src="../assets/images/banner3.jpg" alt="">-->
-          <!--<div class="content">-->
-            <!--<span class="title">在花香与暖阳里<p>发现国内赏花目的地</p></span>-->
-            <!--<p class="desc">趁着好天气，与明媚的春日来张同框合影</p><br>-->
-            <!--<a href="javascript:;" class="btn">查看集合</a>-->
-          <!--</div>-->
-        <!--</a>-->
-      <!--</li>-->
     </ul>
     <ul class="line">
       <li class="line-item" v-for="(item,index) in data" :key="index">
         <span :class="{'move': activeIndex === index}"></span>
       </li>
-      <!--<li class="line-item"></li>-->
-      <!--<li class="line-item"></li>-->
     </ul>
     <div class="arrow clearfix">
       <span class="iconfont left fl" @click="up">&#xe644;</span>
@@ -60,7 +38,7 @@
     data () {
       return {
         timer: null,
-        activeIndex: 0
+        activeIndex: -1
       };
     },
     methods: {
@@ -91,6 +69,9 @@
       }
     },
     mounted () {
+      setTimeout(() => {
+        this.activeIndex = 0;
+      }, 100);
       this.move();
     }
   };
@@ -166,7 +147,7 @@
     z-index: 9;
     .line-item{
       display: inline-block;
-      height: 1px;
+      height: 2px;
       width: 56px;
       background-color: rgba(255, 255, 255, 0.3);
       position: relative;
@@ -188,7 +169,7 @@
         left: 0;
         display: inline-block;
         content: '';
-        height: 3px;
+        height: 2px;
         width: 0px;
         background-color: #fff;
         transition: all 0s;

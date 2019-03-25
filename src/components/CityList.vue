@@ -6,12 +6,16 @@
           <a href="javascript:;" :class="{active:indexActive === index}">{{item.cityName}}</a>
         </div>
       </div>
-      <span class="iconfont right icon" @click="next">&#xe646;</span>
-      <span class="iconfont left icon" @click="up" v-if="this.move">&#xe644;</span>
+      <div class="right-warp">
+        <span class="iconfont right icon" @click="next">&#xe646;</span>
+      </div>
+      <div class="left-warp" v-if="this.move">
+        <span class="iconfont left icon" @click="up" >&#xe644;</span>
+      </div>
     </div>
     <div class="city-goods">
-      <ul class="clearfix goods-wrap" v-for="(item,index) in data" :key="index" :class="{active:indexActive === index}">
-        <li class="goods-item fl" v-for="(info,list) in item.children" :key="list" :class="{'last-child': (list+1) %3 === 0}">
+      <ul class="clearfix goods-wrap" v-for="(item,index) in data" :key="index" :class="{active:indexActive === index, move:tran === ++index}">
+        <li class="goods-item fl"  v-for="(info,list) in item.children" :key="list" :class="{'last-child': (list+1) %3 === 0}">
           <a href="javascript:;">
             <img :src="info.imgUrl" alt="" class="goods-img">
             <div class="room-desc">{{info.roomDesc}}<span class="room-number">{{info.roomNumber}}张床</span></div>
@@ -59,7 +63,8 @@
         indexActive: 0,
         move: 0,
         moveLeft: 0,
-        city: '上海'
+        city: '',
+        tran: 1
       };
     },
     components: {
@@ -73,22 +78,37 @@
       }
     },
     methods: {
+      defaultCity () {
+        console.log(this.data[0]);
+        // this.city = this.data[0].cityName;
+      },
       showGoods (item, index) {
         this.indexActive = index;
+        // this.city = item.cityName;
+        this.tran = index;
         this.city = item.cityName;
+        setTimeout(() => {
+          this.tran++;
+        }, 100);
       },
       next () {
         this.move++;
         this.moveLeft = '-' + this.move * 134;
-        console.log(this.moveLeft);
+        // console.log(this.moveLeft);
       },
       up () {
         if (this.move !== 0) {
           this.move--;
           this.moveLeft = '-' + this.move * 134;
-          console.log(this.move);
-          console.log(this.moveLeft);
+          // console.log(this.move);
+          // console.log(this.moveLeft);
         }
+      }
+    },
+    watch: {
+      data (newData, prevData) {
+        // console.log(newData[0]);
+        this.city = newData[0].cityName;
       }
     }
   };
@@ -123,13 +143,29 @@
       border: solid 0.5px #D8D8D8;
       cursor: pointer;
     }
-    .right{
-      top: 10px;
-      right: -6px;
+    .right-warp{
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 48px;
+      width: 48px;
+      background: linear-gradient(270deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 17%, rgba(255, 255, 255, 0) 100%) !important;
+      .right{
+        top: 10px;
+        right: -6px;
+      }
     }
-    .left{
-      top: 10px;
-      left: 0px;
+    .left-warp{
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 48px;
+      width: 48px;
+      background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 17%, rgba(255, 255, 255, 0) 100%) !important;
+      .left{
+        top: 10px;
+        left: 0px;
+      }
     }
     .list-item{
       display: inline-block;
@@ -169,10 +205,12 @@
       display: none;
       opacity: 0;
       &.active{
-        opacity: 1;
-        transition: all .5s;
         display: block;
       }
+    }
+    .move{
+      opacity: 1;
+      transition: all .1s;
     }
     .goods-item{
       width: 32%;
