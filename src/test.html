@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+
+  </style>
+</head>
+<body>
+<div class="search-choice">
+  <div class="wrapper">
+    <div class="choice-wrap">
+      <a href="javascript:;" class="choice-item active">房源</a>
+      <a href="javascript:;" class="choice-item">体验</a>
+    </div>
+    <div class="choice-box">
+      <div class="city box-item">
+        <span class="iconfont icon">&#xe601;</span>
+        <input type="text" class="text" placeholder="成都" v-model="city" @blur="search('blur')" @focus="search('focus')">
+        <div class="select" v-if="this.showSelect">
+          <p class="desc">温馨提示：您还可以输入城市 + 景点、行政区名进行搜索，如：巴黎 埃菲尔铁塔</p>
+          <div class="select-content clearfix">
+            <div class="select-item fl" v-for="(item,index) in data" :key="index">
+              <a href="javascript:;" class="title">{{item.title}}</a>
+              <ul class="list-wrap clearfix">
+                <li class="fl" v-for="(info,list) in item.children" :key="list" @mousedown="changeCity(info)">
+                  <a href="javascript:;">{{info.city}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="select-footer">
+            <a href="javascript:;" class="title">最近搜索</a>
+            <ul class="clearfix">
+              <li class="fl"><a href="javascript:;">上海市，中国·房源<br><span>3月22日-3月23日</span></a></li>
+              <li class="fl"><a href="javascript:;">重庆市，中国·房源<br><span>3月19日-3月20日</span></a></li>
+              <li class="fl"><a href="javascript:;">新街口，中国·房源<br><span>任何时间</span></a></li>
+              <li class="fl"><a href="javascript:;">新街口，中国·房源<br><span>任何时间</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="time box-item">
+        <!--<span class="iconfont icon">&#xe719;</span>-->
+        <!--<span>入住日期-退房日期</span>-->
+        <el-date-picker class="el-time"
+                        v-model="value6"
+                        size="large"
+                        type="daterange"
+                        format="M月d日"
+                        range-separator="-"
+                        start-placeholder="入住日期"
+                        end-placeholder="退房日期">
+        </el-date-picker>
+      </div>
+      <div class="right-wrap">
+        <div class="number box-item" @click="showNumber">
+          <span class="iconfont icon">&#xe6b6;</span>
+          <span v-if="!this.count">人数</span>
+          <span v-if="this.count">{{this.count}}人</span>
+          <span v-if="this.babyAdd">,{{this.babyCount}}名婴幼儿</span>
+        </div>
+        <div class="btn box-item">
+          <a href="javascript:;">搜索</a>
+        </div>
+        <div class="number-select" v-if="this.showNumberselect">
+          <ul>
+            <li class="clearfix">
+              <span class="fl first">成人</span>
+              <div class="fr">
+                <button class="btns" @click="reduce('adult')" :class="{'disabled': this.adultCount === 0}">-</button>
+                <span class="count">{{this.adultCount}}</span>
+                <button class="btns" @click="add('adult')">+</button>
+              </div>
+            </li>
+            <li class="clearfix">
+              <span class="fl">儿童<br><span class="year">2 - 12岁</span></span>
+              <div class="fr">
+                <button class="btns" @click="reduce('children')" :class="{'disabled': this.childrenCount === 0}">-</button>
+                <span class="count">{{this.childrenCount}}</span>
+                <button class="btns" @click="add('children')">+</button>
+              </div>
+            </li>
+            <li class="clearfix">
+              <span class="fl">婴儿<br><span class="year">2岁以下</span></span>
+              <div class="fr info">
+                <button class="btns" @click="reduce('baby')" :class="{'disabled': this.babyCount === 0}">-</button>
+                <span class="count">{{this.babyCount}}</span>
+                <button class="btns" @click="add('baby')">+</button>
+              </div>
+            </li>
+            <li class="clearfix bottom">
+              <a href="javascript:;" class="fl cancel" @click="cencel">取消</a>
+              <a href="javascript:;" class="fr sure" @click="sure">确定</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

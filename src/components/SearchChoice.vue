@@ -139,6 +139,8 @@
           left: 0;
           padding: 0 4% 15px;
           box-sizing: border-box;
+          background-color: #fff;
+          z-index: 99;
 
           .desc{
             font-size: 14px;
