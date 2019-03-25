@@ -68,7 +68,7 @@
       async getSearchChoiceData () {
         const { data } = await this.axios.get('/api/cityData');
         this.searchChoiceData = data;
-        console.log(data);
+        // console.log(data);
       },
       async getRecentBrowseData () {
         const { data } = await this.axios.get('/api/recentBrowse');

@@ -33,8 +33,17 @@
           </div>
         </div>
         <div class="time box-item">
-          <span class="iconfont icon">&#xe719;</span>
-          <span>入住日期-退房日期</span>
+          <!--<span class="iconfont icon">&#xe719;</span>-->
+          <!--<span>入住日期-退房日期</span>-->
+          <el-date-picker class="el-time"
+                          v-model="value6"
+                          size="large"
+                          type="daterange"
+                          format="M月d日"
+                          range-separator="-"
+                          start-placeholder="入住日期"
+                          end-placeholder="退房日期">
+          </el-date-picker>
         </div>
         <div class="number box-item">
           <span class="iconfont icon">&#xe6b6;</span>
@@ -62,7 +71,8 @@
     data () {
       return {
         showSelect: false,
-        city: ''
+        city: '',
+        value6: ''
       };
     },
     methods: {
@@ -203,6 +213,14 @@
         cursor: pointer;
         width: 25%;
         border-right: 1px solid #ebebeb;
+        .el-time{
+          width: 100%;
+          border: none;
+          .el-range-editor .el-range-input {
+            font-size: 18px !important;
+            line-height: 1;
+          }
+        }
       }
       .number{
         cursor: pointer;
@@ -220,5 +238,16 @@
         }
       }
     }
+  }
+</style>
+<style>
+  .el-date-editor .el-range-input, .el-date-editor .el-range-separator {
+    font-size: 18px;
+    color: #484848 !important;
+  }
+
+  .el-date-editor .el-range__icon {
+    font-size: 20px;
+    color: #484848;
   }
 </style>
