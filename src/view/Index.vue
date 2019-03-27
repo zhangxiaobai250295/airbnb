@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <Header :data="this.navData"></Header>
+    <Header></Header>
     <Swiper :data="this.swiperData"></Swiper>
     <SearchChoice :data="this.searchChoiceData"></SearchChoice>
     <div class="content">
@@ -68,7 +68,88 @@
           </div>
         </div>
       </div>
+      <div class="travel-story">
+        <div class="wrapper">
+          <h3 class="title">精彩旅行故事</h3>
+          <div class="story">
+            <ul class="clearfix">
+              <li class="story-item fl" v-for="(item,index) in this.travelStoryData" :key="index">
+                <a href="javascript:;">
+                  <div class="big-img">
+                    <img :src="item.imgUrl" alt="" class="">
+                  </div>
+                  <div class="text">
+                    <span class="city">{{item.city}}</span>
+                    <span class="desc">{{item.title}}</span>
+                  </div>
+                  <div class="icon">
+                    <div class="name-img">
+                      <img :src="item.nameImgUrl" alt="" >
+                    </div>
+                    <span class="iconfont good">&#xe62b;&nbsp;{{item.good}}</span>
+                    <span class="iconfont comment">&#xe612;&nbsp;{{item.comment}}</span>
+                  </div>
+                  <span class="type">{{item.type}}</span>
+                  <span class="iconfont good-icon">&#xe62b;</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <a href="javascript:;" class="showtotal">显示全部 ></a>
+        </div>
+      </div>
+      <div class="airbnb-plus">
+        <div class="wrapper">
+          <h3 class="title">爱彼迎Plus已在上海推出</h3>
+          <p class="desc">品质与设计均保证的精选房源系列</p>
+          <div class="info">
+            <MovePlusList :data="this.airbnbPlusData"></MovePlusList>
+          </div>
+          <a href="javascript:;" class="showtotal">显示全部 (448) ></a>
+        </div>
+      </div>
+      <div class="experience">
+        <div class="wrapper">
+          <h3 class="title">高分体验</h3>
+          <div class="info">
+            <Experience :data="this.experienceData"></Experience>
+          </div>
+          <a href="javascript:;" class="showtotal">显示所有体验 ></a>
+        </div>
+      </div>
+      <div class="service">
+        <div class="wrapper clearfix">
+          <div class="service-item clearfix fl">
+            <div class="left-img fl">
+              <img src="../assets/images/phone_icon.png" alt="">
+            </div>
+            <div class="right-text fl">
+              <h5>24小时中文客服</h5>
+              <span>400-841-0328</span>
+            </div>
+          </div>
+          <div class="service-item clearfix fl">
+            <div class="left-img fl">
+              <img src="../assets/images/alipay_icon.png" alt="">
+            </div>
+            <div class="right-text fl">
+              <h5>安全支付</h5>
+              <span>支付宝付款已向中国用户开通</span>
+            </div>
+          </div>
+          <div class="service-item clearfix fl">
+            <div class="left-img fl">
+              <img src="../assets/images/sesame.png" alt="">
+            </div>
+            <div class="right-text fl">
+              <h5>芝麻信用</h5>
+              <span>实名认证房东房客信息，真实可靠</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -78,31 +159,31 @@
   import SearchChoice from '../components/SearchChoice';
   import GoodsList from '../components/GoodsList';
   import CityList from '../components/CityList';
+  import MovePlusList from '../components/MovePlusList';
+  import Experience from '../components/Experience';
+  import Footer from '../components/Footer';
   export default {
     name: 'Index',
     components: {
-      Header, Swiper, SearchChoice, GoodsList, CityList
+      Header, Swiper, SearchChoice, GoodsList, CityList, MovePlusList, Experience, Footer
     },
     data () {
       return {
         swiperData: [],
-        navData: [],
         searchChoiceData: [],
         recentBrowseData: [],
         discountData: [],
         springTripData: [],
-        hotPlaceData: []
+        hotPlaceData: [],
+        travelStoryData: [],
+        airbnbPlusData: [],
+        experienceData: []
       };
     },
     methods: {
       async getSwiperData () {
         const { data } = await this.axios.get('/api/advertise');
         this.swiperData = data;
-        // console.log(data);
-      },
-      async getNavData () {
-        const { data } = await this.axios.get('/api/nav');
-        this.navData = data;
         // console.log(data);
       },
       async getSearchChoiceData () {
@@ -129,24 +210,39 @@
         const { data } = await this.axios.get('/api/hotPlace');
         this.hotPlaceData = data;
         // console.log(data);
+      },
+      async getTravelStoryData () {
+        const { data } = await this.axios.get('/api/travelStory');
+        this.travelStoryData = data;
+        // console.log(data);
+      },
+      async getAirbnbPlusData () {
+        const { data } = await this.axios.get('/api/airbnbPlus');
+        this.airbnbPlusData = data;
+        // console.log(data);
+      },
+      async getExperienceData () {
+        const { data } = await this.axios.get('/api/experience');
+        this.experienceData = data;
+        // console.log(data);
       }
-
     },
     mounted () {
       this.getSwiperData();
-      this.getNavData();
       this.getSearchChoiceData();
       this.getRecentBrowseData();
       this.getDiscountData();
       this.getSpringTripData();
       this.getHotPlaceData();
+      this.getTravelStoryData();
+      this.getAirbnbPlusData();
+      this.getExperienceData();
     }
   };
 </script>
 
 <style lang="less" scoped>
 #main{
-  height: 5000px;
 
   .content{
     .recent{
@@ -219,6 +315,133 @@
             color: #484848;
             margin-bottom: 5px;
           }
+        }
+      }
+    }
+    .travel-story{
+      .title{
+        /*margin-top: 40px;*/
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .story-item{
+        position: relative;
+        padding: 5px;
+        box-sizing: border-box;
+        width: 25%;
+        margin-bottom: 15px;
+        .big-img{
+          height: 246px;
+          /*background-color: pink;*/
+          margin-bottom: 5px;
+          img{
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+          }
+        }
+        .text{
+          margin-bottom: 5px;
+          .city{
+            font-size: 14px;
+            font-weight: bolder;
+            color: rgb(72, 72, 72);
+          }
+          .desc{
+            font-size: 14px;
+            color: #484848;
+            font-weight: 400;
+          }
+        }
+        .icon{
+          .name-img{
+            display: inline-block;
+            height: 24px;
+            width: 24px;
+            /*background-color: deeppink;*/
+            margin-right: 10px;
+            img{
+              height: 100%;
+              width: 100%;
+              border-radius: 50%;
+            }
+          }
+          .good,.comment{
+            margin-right: 10px;
+            font-size: 14px;
+            color: rgb(118, 118, 118);
+          }
+        }
+        .type{
+          display: inline-block;
+          position: absolute;
+          font-size: 12px;
+          color: #484848;
+          font-weight: bolder;
+          right: 5%;
+          bottom: 30%;
+          width: 40px;
+          height: 26px;
+          line-height: 26px;
+          text-align: center;
+          background-color: #fff;
+          border-radius: 5px;
+        }
+        .good-icon{
+          position: absolute;
+          font-size: 33px;
+          top: 0;
+          right: 3%;
+          color: #fff;
+        }
+      }
+      .showtotal{
+        font-size: 18px;
+        font-weight: bolder;
+        color: rgb(0, 132, 137);
+
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+    .airbnb-plus{
+      color: #484848;
+      .title{
+        margin-top: 40px;
+        font-size: 24px;
+      }
+      .desc{
+        font-size: 16px;
+        line-height: 16px;
+        margin-bottom: 25px;
+      }
+      .wrapper{
+        overflow: hidden;
+
+      }
+      .showtotal{
+        font-size: 18px;
+        font-weight: bolder;
+        color: rgb(0, 132, 137);
+
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+    .experience{
+      .title{
+        margin-top: 40px;
+        font-size: 24px;
+      }
+      .showtotal{
+        font-size: 18px;
+        font-weight: bolder;
+        color: rgb(0, 132, 137);
+
+        &:hover{
+          text-decoration: underline;
         }
       }
     }

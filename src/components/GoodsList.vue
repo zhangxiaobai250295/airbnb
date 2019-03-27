@@ -4,7 +4,8 @@
       <li class="goods-item fl" v-for="(item,index) in data" :key="index">
         <a href="javascript:;">
           <img :src="item.imgUrl" alt="" class="goods-img">
-          <div class="room-desc">{{item.roomDesc}}<span class="room-number">{{item.roomNumber}}张床</span></div>
+          <div class="room-desc" v-if="item.roomDesc">{{item.roomDesc}}<span class="room-number" v-if="item.roomNumber">{{item.roomNumber}}张床</span></div>
+          <div class="room-desc color" v-if="item.validate"><span class="plus">plus</span><span class="room-number">{{item.city}}张床</span></div>
           <p class="title">{{item.title}}</p>
           <p class="titleDesc" v-if="item.titleDesc">{{item.titleDesc}}</p>
           <div class="price-wrap clearfix" v-if="item.price">
@@ -65,11 +66,24 @@
       height: 100%;
       width: 100%;
     }
+    .color{
+      color: rgb(145, 70, 105) !important;
+    }
     .room-desc{
       color: #231341;
       font-size: 12px;
       font-weight: bold;
-
+      .plus{
+        display: inline-block;
+        width: 37px;
+        height: 16px;
+        line-height: 15px;
+        background-color: rgb(145, 70, 105);
+        color: #fff;
+        font-weight: bolder;
+        text-align: center;
+        border-radius: 3px;
+      }
       .room-number{
         position: relative;
         margin-left: 8px;

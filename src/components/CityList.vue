@@ -40,7 +40,7 @@
         </li>
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" @click="goToCategory">
       查看更多<span>{{this.city}}</span>房源 >
     </div>
   </div>
@@ -78,10 +78,6 @@
       }
     },
     methods: {
-      defaultCity () {
-        console.log(this.data[0]);
-        // this.city = this.data[0].cityName;
-      },
       showGoods (item, index) {
         this.indexActive = index;
         // this.city = item.cityName;
@@ -103,6 +99,11 @@
           // console.log(this.move);
           // console.log(this.moveLeft);
         }
+      },
+      goToCategory () {
+        this.$router.push({
+          name: 'Category'
+        });
       }
     },
     watch: {
@@ -357,6 +358,7 @@
     }
   }
   .footer{
+    cursor: pointer;
     font-size: 17px;
     color: #484848;
     font-weight: bold;

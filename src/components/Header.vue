@@ -51,7 +51,7 @@
       </div>
     </div>
     <nav class="nav fr">
-      <a :href="item.href" class="item" v-for="(item,index) in data" :key="index">{{item.name}}</a>
+      <a :href="item.href" class="item" v-for="(item,index) in this.navData" :key="index">{{item.name}}</a>
       <!--<a href="javascript:;" class="item">手机端</a>-->
       <!--<a href="javascript:;" class="item">成为房东/体验达人</a>-->
       <!--<a href="javascript:;" class="item">故事</a>-->
@@ -81,10 +81,16 @@
     },
     data () {
       return {
+        navData: [],
         showSearchList: false
       };
     },
     methods: {
+      async getNavData () {
+        const { data } = await this.axios.get('/api/nav');
+        this.navData = data;
+        // console.log(data);
+      },
       search (type) {
         if (type === 'blur') {
           this.showSearchList = false;
@@ -100,7 +106,7 @@
       }
     },
     mounted: function () {
-      // this.globalClick(this.moreSetupMenuRemove);
+      this.getNavData();
     }
   };
 </script>
@@ -142,6 +148,8 @@
       box-sizing: border-box;
       border-radius: 5px;
       background-color: #fff;
+      border: 1px solid #EBEBEB;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       .icon{
         position: absolute;
         top: 50%;
@@ -182,6 +190,19 @@
         left: 0;
         width: 100%;
         text-indent: 35px;
+        /*border: 1px solid #EBEBEB;*/
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .icon{
+          position: absolute;
+          top: 50%;
+          left: 5px;
+          z-index: 9;
+          transform: translateY(-50%);
+          margin-left: 10px;
+          font-size: 25px;
+          font-weight: bold;
+          vertical-align: middle;
+        }
         ul{
           margin-top: 5px;
           .list-item{
