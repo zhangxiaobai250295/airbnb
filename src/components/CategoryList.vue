@@ -1,7 +1,7 @@
 <template>
   <div class="category-list">
     <ul class="clearfix">
-      <li class="list-item fl">
+      <li class="list-item fl" @click="goToDatail">
         <a href="javascript:;">
           <div class="img">
             <img src="../assets/images/banner.jpg" alt="">
@@ -49,7 +49,14 @@
 
 <script>
   export default {
-    name: 'CategoryList'
+    name: 'CategoryList',
+    methods: {
+      goToDatail () {
+        this.$router.push({
+          name: 'Datail'
+        });
+      }
+    }
   };
 </script>
 

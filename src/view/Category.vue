@@ -69,7 +69,17 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
+    <div class="footer clearfix">
+      <a href="javascript:;" class="show-footer show fr" v-if="!this.showFooter" @click="showfooter">
+        <span class="iconfont">&#xe620;</span>
+        <span class="text">条款,隐私政策,货币以及更多</span>
+      </a>
+      <a href="javascript:;" class="hidden-footer show fr" v-if="showFooter" @click="showfooter">
+        <span class="iconfont">&#xe61f;</span>
+        <span class="text">关闭</span>
+      </a>
+      <Footer v-if="this.showFooter"></Footer>
+    </div>
   </div>
 </template>
 
@@ -82,7 +92,8 @@
     data () {
       return {
         value4: true,
-        showmap: false
+        showmap: false,
+        showFooter: false
       };
     },
     components: {
@@ -91,6 +102,9 @@
     methods: {
       showMap () {
         this.showmap = !this.showmap;
+      },
+      showfooter () {
+        this.showFooter = !this.showFooter;
       }
     }
   };
@@ -262,6 +276,35 @@
           }
         }
       }
+    }
+  }
+  .footer{
+    /*position: relative;*/
+    width: 100%;
+    bottom: 2%;
+    right: 1%;
+    position: fixed;
+    background-color: #fff;
+    z-index: 9;
+    .show{
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      font-size: 16px;
+      font-weight: bolder;
+      color: #484848;
+    }
+    .show-footer{
+      padding: 5px 10px;
+    }
+    .hidden-footer{
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 5px 15px;
+      font-size: 18px;
+      font-weight: bolder;
+      border: 1px solid #008489;
+      z-index: 10;
     }
   }
 }
