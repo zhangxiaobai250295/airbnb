@@ -52,7 +52,7 @@
     <div class="content">
       <h3 class="title">超过300个房源</h3>
       <div class="info">
-        <CategoryList></CategoryList>
+        <CategoryList :data="this.categoryData"></CategoryList>
         <div class="paging">
           <div class="btn-group">
             <a href="javascript:;" class="btn-item active">1</a>
@@ -69,12 +69,12 @@
         </div>
       </div>
     </div>
-    <div class="footer clearfix">
-      <a href="javascript:;" class="show-footer show fr" v-if="!this.showFooter" @click="showfooter">
+    <div class="footer">
+      <a href="javascript:;" class="show-footer show" v-if="!this.showFooter" @click="showfooter">
         <span class="iconfont">&#xe620;</span>
         <span class="text">条款,隐私政策,货币以及更多</span>
       </a>
-      <a href="javascript:;" class="hidden-footer show fr" v-if="showFooter" @click="showfooter">
+      <a href="javascript:;" class="hidden-footer show" v-if="showFooter" @click="showfooter">
         <span class="iconfont">&#xe61f;</span>
         <span class="text">关闭</span>
       </a>
@@ -91,6 +91,7 @@
     name: 'Category',
     data () {
       return {
+        categoryData: [],
         value4: true,
         showmap: false,
         showFooter: false
@@ -100,12 +101,20 @@
       Header, Footer, CategoryList
     },
     methods: {
+      async getCategoryData () {
+        const {data} = await this.axios.get('/api/categoryList');
+        this.categoryData = data;
+        console.log(data);
+      },
       showMap () {
         this.showmap = !this.showmap;
       },
       showfooter () {
         this.showFooter = !this.showFooter;
       }
+    },
+    mounted () {
+      this.getCategoryData();
     }
   };
 </script>
@@ -281,30 +290,32 @@
   .footer{
     /*position: relative;*/
     width: 100%;
-    bottom: 2%;
+    bottom: 0%;
+    padding-bottom: 20px;
     right: 1%;
     position: fixed;
     background-color: #fff;
-    z-index: 9;
+    z-index: 99;
     .show{
       border-radius: 4px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
       font-size: 16px;
       font-weight: bolder;
       color: #484848;
+      position: absolute;
+      bottom: 116%;
+      right: 2%;
+      background-color: #fff;
     }
     .show-footer{
       padding: 5px 10px;
     }
     .hidden-footer{
-      position: absolute;
-      bottom: 0;
-      right: 0;
       padding: 5px 15px;
       font-size: 18px;
       font-weight: bolder;
       border: 1px solid #008489;
-      z-index: 10;
+      z-index: 999;
     }
   }
 }

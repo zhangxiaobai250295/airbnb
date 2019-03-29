@@ -113,6 +113,7 @@
   .footer{
     margin-top: 115px;
     border-top: 1px solid rgb(235, 235, 235);
+    width: 100%;
     .info{
       padding: 48px 24px;
 

@@ -1,13 +1,20 @@
 <template>
   <div class="category-list">
     <ul class="clearfix">
-      <li class="list-item fl" @click="goToDatail">
+      <li class="list-item fl" @click="goToDatail" v-for="(item,index) in data" :key="index">
         <a href="javascript:;">
           <div class="img">
-            <img src="../assets/images/banner.jpg" alt="">
+            <div class="img-wrap clearfix mal" :style="maL">
+              <div class="list-item fl" v-for="(img,list) in item.pdp_listing_detail.photos" :key="list">
+                <img :src="img.picture" alt="" class="fl">
+              </div>
+              <!--<div class="list-item fl">-->
+                <!--<img src="../assets/images/banner2.jpg" alt="" class="fl">-->
+              <!--</div>-->
+            </div>
             <div class="arrow clearfix">
-              <span class="iconfont left icon fl">&#xe644;</span>
-              <span class="iconfont right icon fr">&#xe646;</span>
+              <span class="iconfont left icon fl" @click.stop="up">&#xe644;</span>
+              <span class="iconfont right icon fr" @click.stop="next">&#xe646;</span>
             </div>
             <div class="round">
               <span class="round-item big"></span>
@@ -50,11 +57,62 @@
 <script>
   export default {
     name: 'CategoryList',
+    props: {
+      data: {
+        type: Array,
+        default () {
+          return [];
+        }
+      },
+      width: {
+        type: Number,
+        default: 276
+      }
+    },
+    computed: {
+      listWrapper () {
+        return {
+          width: `${(this.data.length + 1) * this.width}px `
+        };
+      },
+      maL () {
+        return {
+          marginLeft: `${this.moveLeft}px`
+        };
+      }
+    },
+    data () {
+      return {
+        move: 0,
+        moveLeft: 0,
+        defaultData: []
+      };
+    },
     methods: {
       goToDatail () {
         this.$router.push({
           name: 'Datail'
         });
+      },
+      up () {
+        if (this.move !== 0) {
+          this.move--;
+          this.moveLeft = '-' + this.move * 276;
+          // console.log(this.move);
+          // console.log(this.moveLeft);
+        }
+      },
+      next () {
+        this.move++;
+        this.moveLeft = '-' + this.move * 276;
+        // this.move++;
+        // this.moveLeft = '-' + this.move * 276;
+      }
+    },
+    watch: {
+      data (newData, prevData) {
+        // console.log(newData[0]);
+        this.defaultData = newData;
       }
     }
   };
@@ -72,6 +130,7 @@
       height: 185px;
       background-color: pink;
       position: relative;
+      overflow: hidden;
       &:hover .arrow{
         display: block;
       }
@@ -148,11 +207,31 @@
         border-radius: 3px;
         background-color: #fff;
       }
-      img{
-        border-radius: 5px;
-        width: 100%;
-        height: 100%;
+      .img-wrap{
+        /*width: 100%;*/
+        width: 552px;
+        height: 185px;
+        .list-item{
+          /*padding: 0;*/
+          margin: 0;
+          padding: 0;
+          width: 276px;
+          height: 185px;
+          img{
+            border-radius: 5px;
+            width: 100%;
+            height: 100%;
+          }
+        }
       }
+      .mal{
+        transition: all .3s;
+      }
+      /*img{*/
+        /*border-radius: 5px;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+      /*}*/
     }
     .room-desc{
       color: rgb(118, 118, 118);
