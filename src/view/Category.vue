@@ -52,23 +52,59 @@
     <div class="content">
       <h3 class="title">超过300个房源</h3>
       <div class="info">
-        <CategoryList :data="this.categoryData"></CategoryList>
-        <div class="paging">
-          <div class="btn-group">
-            <a href="javascript:;" class="btn-item active">1</a>
-            <a href="javascript:;" class="btn-item">2</a>
-            <a href="javascript:;" class="btn-item">3</a>
-            <a href="javascript:;" class="btn-item">...</a>
-            <a href="javascript:;" class="btn-item last">&gt;</a>
+        <div class="normal-show" v-if="!showmap">
+          <CategoryList :data="this.categoryData_1"></CategoryList>
+          <div class="banner">
+            <div class="wrapper clearfix">
+              <div class="img fl">
+                <img src="../assets/images/invitation.jpg" alt="">
+              </div>
+              <div class="text fl">
+                <span>每邀请一位好友，即可为你的旅行节省 ￥75</span><br>
+                <a href="javascript:;" class="btn">立即邀请</a>
+              </div>
+            </div>
           </div>
-         <div class="text">
-           <p>1 – 18 共超过300个房源出租</p>
-           <p>包含额外附加费用及适用税费。</p>
-           <p>只有预订后的48小时之内可以免费取消。</p>
-         </div>
+          <CategoryList :data="this.categoryData_2"></CategoryList>
+          <div class="paging">
+            <div class="btn-group">
+              <a href="javascript:;" class="btn-item active">1</a>
+              <a href="javascript:;" class="btn-item">2</a>
+              <a href="javascript:;" class="btn-item">3</a>
+              <a href="javascript:;" class="btn-item">...</a>
+              <a href="javascript:;" class="btn-item last">&gt;</a>
+            </div>
+            <div class="text">
+              <p>1 – 18 共超过300个房源出租</p>
+              <p>包含额外附加费用及适用税费。</p>
+              <p>只有预订后的48小时之内可以免费取消。</p>
+            </div>
+          </div>
+        </div>
+        <div class="map-show clearfix" v-if="showmap">
+          <div class="map-list fl">
+            <MapCategoryList :data="this.categoryData_1"></MapCategoryList>
+            <div class="paging">
+              <div class="btn-group">
+                <a href="javascript:;" class="btn-item active">1</a>
+                <a href="javascript:;" class="btn-item">2</a>
+                <a href="javascript:;" class="btn-item">3</a>
+                <a href="javascript:;" class="btn-item">...</a>
+                <a href="javascript:;" class="btn-item last">&gt;</a>
+              </div>
+              <div class="text">
+                <p>1 – 18 共超过300个房源出租</p>
+                <p>包含额外附加费用及适用税费。</p>
+                <p>只有预订后的48小时之内可以免费取消。</p>
+              </div>
+            </div>
+          </div>
+          <div class="map fl">
+            111111
+          </div>
         </div>
       </div>
-    </div>
+      </div>
     <div class="footer">
       <a href="javascript:;" class="show-footer show" v-if="!this.showFooter" @click="showfooter">
         <span class="iconfont">&#xe620;</span>
@@ -87,30 +123,43 @@
   import Header from '../components/Header';
   import Footer from '../components/Footer';
   import CategoryList from '../components/CategoryList';
+  import MapCategoryList from '../components/MapCategoryList';
   export default {
     name: 'Category',
     data () {
       return {
-        categoryData: [],
+        categoryData_1: [],
+        categoryData_2: [],
         value4: true,
         showmap: false,
         showFooter: false
       };
     },
     components: {
-      Header, Footer, CategoryList
+      Header, Footer, CategoryList, MapCategoryList
     },
     methods: {
       async getCategoryData () {
-        const {data} = await this.axios.get('/api/categoryList');
-        this.categoryData = data;
-        console.log(data);
+        const {data} = await this.axios.get('/api/categoryList?_page=1&_limit=15');
+        // this.categoryData = data;
+        this.categoryData_1 = this.splitArray(data, 10)[0];
+        this.categoryData_2 = this.splitArray(data, 10)[1];
+        // console.log(data);
       },
       showMap () {
         this.showmap = !this.showmap;
       },
       showfooter () {
         this.showFooter = !this.showFooter;
+      },
+      splitArray (arr, len) {
+        let aLen = arr.length;
+        let result = [];
+        for (let i = 0; i < aLen; i += len) {
+          result.push(arr.slice(i, i + len));
+        }
+        // console.log(result);
+        return result;
       }
     },
     mounted () {
@@ -243,13 +292,77 @@
     }
     .info{
       width: 100%;
-      position: relative;
+      /*position: relative;*/
+      .banner{
+        margin: 50px 0 30px;
+        padding: 30px 0;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        .img{
+          /*display: inline-block;*/
+          width: 483px;
+          height: 241px;
+          /*background-color: pink;*/
+          img{
+            height: 100%;
+            width: 100%;
+          }
+        }
+        .text{
+          /*display: inline-block;*/
+          margin-left: 20px;
+          span{
+            margin-top: 83px;
+            margin-bottom: 15px;
+            display: inline-block;
+            font-size: 25px;
+            color: #484848;
+            font-weight: bolder;
+          }
+          .btn{
+            padding: 10px 15px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bolder;
+            background-color: rgb(0, 132, 137);
+            border-radius: 5px;
+          }
+        }
+      }
+      .normal-show{
+        position: relative;
+      }
+      .map-show{
+        /*position: relative;*/
+        width: 60%;
+        .map-list{
+          width: 100%;
+          /*height: 500px;*/
+          /*background-color: pink;*/
+        }
+        .map{
+          width: 40%;
+          height: 584px;
+          background-color: deeppink;
+          position: fixed;
+          right: 0;
+          top: 19%;
+        }
+      }
       .paging{
-        margin: 50px;
+        /*margin: 50px;*/
+        /*position: absolute;*/
+        /*bottom: 0%;*/
+        /*left: 50%;*/
+        /*transform: translateX(-50%);*/
+        margin-top: 20px;
+        padding-bottom: 20px;
         .btn-group{
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
+          text-align: center;
+          /*position: absolute;*/
+          /*bottom: 0;*/
+          /*left: 50%;*/
+          /*transform: translateX(-50%);*/
           .btn-item{
             margin-right: 10px;
             display: inline-block;
@@ -291,7 +404,7 @@
     /*position: relative;*/
     width: 100%;
     bottom: 0%;
-    padding-bottom: 20px;
+    /*padding-bottom: 20px;*/
     right: 1%;
     position: fixed;
     background-color: #fff;
@@ -303,7 +416,7 @@
       font-weight: bolder;
       color: #484848;
       position: absolute;
-      bottom: 116%;
+      bottom: 18px;
       right: 2%;
       background-color: #fff;
     }

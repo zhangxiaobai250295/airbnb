@@ -4,7 +4,7 @@
       <li class="list-item fl" @click="goToDatail" v-for="(item,index) in data" :key="index">
         <a href="javascript:;">
           <div class="img">
-            <div class="img-wrap clearfix mal" :style="maL">
+            <div class="img-wrap clearfix mal" :style="[maL,imgWrapWidth]">
               <div class="list-item fl" v-for="(img,list) in item.pdp_listing_detail.photos" :key="list">
                 <img :src="img.picture" alt="" class="fl">
               </div>
@@ -14,7 +14,7 @@
             </div>
             <div class="arrow clearfix">
               <span class="iconfont left icon fl" @click.stop="up">&#xe644;</span>
-              <span class="iconfont right icon fr" @click.stop="next">&#xe646;</span>
+              <span class="iconfont right icon fr" @click.stop="next(item.pdp_listing_detail.photos.length)">&#xe646;</span>
             </div>
             <div class="round">
               <span class="round-item big"></span>
@@ -25,18 +25,24 @@
               <span class="round-item small"></span>
             </div>
             <span class="iconfont love">&#xe62a;</span>
-            <span class="type">新房源</span>
+            <span class="type" v-if="name.name === '新房源'" v-for="(name,li) in item.pdp_listing_detail.preview_tags" :key="li">{{name.name}}</span>
           </div>
-          <div class="room-desc">整件公寓<span class="room-number">单间1卫1床</span></div>
+          <div class="room-desc">
+            {{item.pdp_listing_detail.room_and_property_type}}
+            <span class="room-number">
+              {{item.pdp_listing_detail.bedroom_label}}{{item.pdp_listing_detail.bathroom_label}}
+              {{item.pdp_listing_detail.bed_label}}
+            </span>
+          </div>
           <div class="desc clearfix">
-            <p class="title fl">這•間民宿【叁舍】 超大江景落地窗/网红浴缸拍照/海洋球/培元桥地铁站/简欧田园风/</p>
+            <p class="title fl">{{item.pdp_listing_detail.name}}</p>
             <div class="name-img fr">
-              <img src="../assets/images/banner2.jpg" alt="">
+              <img :src="item.pdp_listing_detail.user.profile_pic_path" alt="">
             </div>
           </div>
           <div class="evaluate">
             <span class="iconfont icon">&#xe643;&#xe643;&#xe643;&#xe643;&#xe643;</span>
-            <span class="number">31</span>
+            <span class="number">{{item.pdp_listing_detail.visible_review_count}}</span>
           </div>
           <div class="price-wrap clearfix">
             <span class="price fl">￥253</span>
@@ -75,6 +81,11 @@
           width: `${(this.data.length + 1) * this.width}px `
         };
       },
+      imgWrapWidth () {
+        return {
+          width: `${(this.imgLenght) * this.width}px `
+        };
+      },
       maL () {
         return {
           marginLeft: `${this.moveLeft}px`
@@ -85,7 +96,8 @@
       return {
         move: 0,
         moveLeft: 0,
-        defaultData: []
+        defaultData: [],
+        imgLenght: 1
       };
     },
     methods: {
@@ -102,7 +114,9 @@
           // console.log(this.moveLeft);
         }
       },
-      next () {
+      next (lenght) {
+        // console.log(lenght);
+        this.imgLenght = lenght;
         this.move++;
         this.moveLeft = '-' + this.move * 276;
         // this.move++;
@@ -240,8 +254,8 @@
       margin-top: 5px;
       .room-number{
         position: relative;
-        margin-left: 8px;
-        padding-left: 8px;
+        margin-left: 0px;
+        padding-left: 7px;
 
         &:before{
           position: absolute;
@@ -273,7 +287,7 @@
       .name-img{
         height: 40px;
         width: 40px;
-        background-color: deeppink;
+        /*background-color: deeppink;*/
         img{
           height: 100%;
           width: 100%;
