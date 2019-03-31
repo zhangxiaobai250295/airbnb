@@ -84,6 +84,18 @@
         <div class="map-show clearfix" v-if="showmap">
           <div class="map-list fl">
             <MapCategoryList :data="this.categoryData_1"></MapCategoryList>
+            <div class="banner banner-small">
+              <div class="wrapper clearfix">
+                <div class="img fl img-small">
+                  <img src="../assets/images/invitation.jpg" alt="">
+                </div>
+                <div class="text fl">
+                  <span class="span-small">每邀请一位好友，即可为你的旅行节省 ￥75</span><br>
+                  <a href="javascript:;" class="btn">立即邀请</a>
+                </div>
+              </div>
+            </div>
+            <MapCategoryList :data="this.categoryData_2"></MapCategoryList>
             <div class="paging">
               <div class="btn-group">
                 <a href="javascript:;" class="btn-item active">1</a>
@@ -99,8 +111,16 @@
               </div>
             </div>
           </div>
-          <div class="map fl">
-            111111
+          <div class="map fl" id="container">
+            <!--<el-amap class="amap-box" :vid="'amap-vue'"></el-amap>-->
+            <!--<el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" :events="events">-->
+            <!--</el-amap>-->
+            <el-amap
+              vid="amapDemo"
+              :center="center"
+              :zoom="zoom"
+              :events="events">
+            </el-amap>
           </div>
         </div>
       </div>
@@ -127,12 +147,37 @@
   export default {
     name: 'Category',
     data () {
+      let self = this;
       return {
         categoryData_1: [],
         categoryData_2: [],
         value4: true,
         showmap: false,
-        showFooter: false
+        showFooter: false,
+        zoom: 12,
+        center: [121.59996, 31.197646],
+        address: '',
+        events: {
+          click (e) {
+            let { lng, lat } = e.lnglat;
+            self.lng = lng;
+            self.lat = lat;
+            var geocoder = new AMap.Geocoder({
+              radius: 1000,
+              extensions: 'all'
+            });
+            geocoder.getAddress([lng, lat], function (status, result) {
+              if (status === 'complete' && result.info === 'OK') {
+                if (result && result.regeocode) {
+                  self.address = result.regeocode.formattedAddress;
+                  self.$nextTick();
+                }
+              }
+            });
+          }
+        },
+        lng: 0,
+        lat: 0
       };
     },
     components: {
@@ -293,11 +338,18 @@
     .info{
       width: 100%;
       /*position: relative;*/
+      .banner-small{
+        padding: 30px 50px !important;
+      }
       .banner{
         margin: 50px 0 30px;
         padding: 30px 0;
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
+        .img-small{
+          width: 274px !important;
+          height: 137px !important;
+        }
         .img{
           /*display: inline-block;*/
           width: 483px;
@@ -318,6 +370,9 @@
             font-size: 25px;
             color: #484848;
             font-weight: bolder;
+          }
+          .span-small{
+            margin-top: 28px !important;
           }
           .btn{
             padding: 10px 15px;
@@ -405,7 +460,7 @@
     width: 100%;
     bottom: 0%;
     /*padding-bottom: 20px;*/
-    right: 1%;
+    right: 0%;
     position: fixed;
     background-color: #fff;
     z-index: 99;

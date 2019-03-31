@@ -1,6 +1,12 @@
 // https://eslint.org/docs/user-guide/configuring
 
 module.exports = {
+  "globals":{
+    "AMap":"AMap",
+    "particlesJs":true,
+    "expect":true,
+    "sinon":true
+  },
   root: true,
   parserOptions: {
     parser: 'babel-eslint'

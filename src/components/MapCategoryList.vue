@@ -49,8 +49,9 @@
                   <img src="" alt="">
                 </div>
                 <div class="text fl">
-                  <!--{{item.pdp_listing_detail.sorted_reviews[0]}}-->
-                  第一次住Nancy家房子完全超出了预期! 很干净!位置也很好找有公交直达!总之很满意了
+                  {{item.pdp_listing_detail.sorted_reviews[0]}}
+                  <!--{{item.pdp_listing_detail.sorted_reviews[0].comments}}-->
+                  <!--第一次住Nancy家房子完全超出了预期! 很干净!位置也很好找有公交直达!总之很满意了-->
                 </div>
               </div>
             </div>

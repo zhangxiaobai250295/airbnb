@@ -22,7 +22,7 @@
                 <span class="room-desc">整套公寓</span>
               </div>
               <h3 class="title">公园前双地铁/北京路上下九/机场/南站投影大床房</h3>
-              <div class="room-info">
+              <div class="room-label">
                 <span class="iconfont icon">&#xe61e;<span class="text">1间卧室</span></span>
                 <span class="iconfont icon">&#xe605;<span class="text">2张床</span></span>
                 <span class="iconfont icon">&#xe60b;<span class="text">1间卫生间</span></span>
@@ -177,6 +177,54 @@
                   </div>
                   <div class="text">交通便利,窗明几净,床铺舒服,房东热情｡</div>
                 </div>
+              </div>
+              <div class="other">
+                <span>房东收到的其他评价</span>
+              </div>
+            </div>
+            <div class="date-wrap">
+              <h3 class="date-title">可订日期</h3>
+              <div class="timer">
+                <div class="condition clearfix">
+                  <div class="left-text fl">
+                    <span>至少住一晚 ·</span>
+                    <span>今天更新</span>
+                  </div>
+                  <div class="right-text fr">
+                    <a href="javascript:;">清除日期</a>
+                  </div>
+                </div>
+                <div class="timer-box" style="height: 304px; background-color: pink">
+
+                </div>
+              </div>
+            </div>
+            <div class="position">
+              <h3 class="position-title">位置</h3>
+              <div class="position-city">
+                <span>广州市</span>
+                <span>广东省</span>
+                <span>中国</span>
+              </div>
+              <div class="map" style="height: 280px;background-color: pink">
+
+              </div>
+              <div class="position-list">
+                <ul>
+                  <li class="position-item">
+                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
+                  </li>
+                  <li class="position-item">
+                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
+                  </li>
+                  <li class="position-item">
+                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
+                  </li>
+                  <li class="position-item">
+                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
+                  </li>
+                </ul>
+                <a href="javascript:;">查看更多周边信息</a>
               </div>
             </div>
           </div>
@@ -431,6 +479,8 @@
               position: relative;
               margin-left: 5px;
               padding-left: 10px;
+              border-top: none;
+              padding-top: 0;
               &:before{
                 position: absolute;
                 top: 50%;
@@ -441,7 +491,7 @@
                 content: '';
                 width: 4px;
                 height: 4px;
-                background-color: rgb(57, 87, 106);
+                background-color: #484848;
                 border-radius: 50%;
               }
             }
@@ -452,8 +502,9 @@
             line-height: 35px;
             color: rgb(72, 72, 72);
           }
-          .room-info{
+          .room-label{
             margin-top: 15px;
+            margin-bottom: 20px;
             .icon{
               display: inline-block;
               font-size: 14px;
@@ -465,7 +516,7 @@
             }
           }
           .type{
-            padding: 30px 0 40px;
+            padding: 0px 0 30px;
             border-bottom: 1px solid #ccc;
             span{
               padding: 5px 8px;
@@ -647,6 +698,15 @@
                 font-size: 16px;
                 font-weight: normal;
               }
+            }
+          }
+          .other{
+            padding-top: 24px;
+            border-top: 1px solid #ccc;
+            span{
+              color: #008489;
+              font-size: 15px;
+              font-weight: bolder;
             }
           }
         }
