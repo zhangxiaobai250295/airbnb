@@ -20,9 +20,10 @@ export default new Router({
       component: Category
     },
     {
-      path: '/datail/:id?',
+      path: '/datail/:id',
       name: 'Datail',
-      component: Datail
+      component: Datail,
+      props: true
     }
   ]
 });

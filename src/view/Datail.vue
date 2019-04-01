@@ -227,12 +227,140 @@
                 <a href="javascript:;">查看更多周边信息</a>
               </div>
             </div>
+            <div class="notice">
+              <h3 class="notice-title">须知</h3>
+              <ul class="notice-list">
+                <li class="list-item clearfix">
+                  <div class="left-title fl">基本要求</div>
+                  <div class="right-text fl">
+                    <div class="text-item">
+                      不允许携带宠物
+                    </div>
+                    <div class="text-item">
+                      禁止吸烟、派对或活动
+                    </div>
+                    <div class="text-item">
+                      15:00后可以随时入住，12:00前退房
+                    </div>
+                    <div class="rules">
+                      <a href="javascript:;">房屋守则</a>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-item clearfix">
+                  <div class="left-title fl">取消政策</div>
+                  <div class="right-text fl">
+                    <div class="text-item">
+                      中等<a href="javascript:;">查看完整详情</a>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-item clearfix">
+                  <div class="left-title fl">交易提示</div>
+                  <div class="right-text fl">
+                    <div class="text-item">
+                      为了保护您的账号隐私和付款安全，请不要相信其它任何平台的折扣或礼金券代订，并始终在爱彼迎站内转账和交流。
+                      <a href="javascript:;">查看详情</a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="landlord_2">
+              <h3 class="landlord_2-title">房东</h3>
+              <div class="landlord_2-info clearfix">
+                <div class="left-text fl">
+                  <div class="name">泽彬 <a href="javascript:;">联系房东</a></div>
+                  <div class="city-time">China, 中国 · 注册时间：2016年5月</div>
+                  <div class="type clearfix">
+                    <div class="type-comment fl"><span>63</span>条评论</div>
+                    <div class="type-validate fl"><img src="" alt="">已验证</div>
+                  </div>
+                </div>
+                <div class="right-img fr">
+                  11
+                </div>
+              </div>
+              <div class="interaction">
+                <h4 class="interac-title">与房客的互动</h4>
+                <p>有问题随时通过任何方式都可以联系我,没回复时请拨打我电话!</p>
+                <div>回复率：100%</div>
+                <div>回复时间：1小时内</div>
+              </div>
+            </div>
           </div>
           <div class="order fl">
 
           </div>
         </div>
-        <div></div>
+        <div class="live">
+          <h3 class="live-title">你可能还喜欢</h3>
+          <MovePlusList :data="this.airbnbPlusData"></MovePlusList>
+        </div>
+        <div class="city-other clearfix">
+          <h3 class="other-title">广州市附近的其他选择</h3>
+          <p class="small">更多广州市的房源：Apartments · Bed and breakfasts · Lofts · Villas · Condominiums</p>
+          <ul class="other-service fl">
+            <li class="service-item">
+              <a href="javascript:;">Hong Kong</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Wan Chai</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Guangzhou</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Propriano</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Kanagawa Prefecture</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Wistow</a>
+            </li>
+          </ul>
+          <ul class="other-service fl">
+            <li class="service-item">
+              <a href="javascript:;">Hong Kong</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Wan Chai</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Guangzhou</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Propriano</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Kanagawa Prefecture</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Wistow</a>
+            </li>
+          </ul>
+          <ul class="other-service fl">
+            <li class="service-item">
+              <a href="javascript:;">Hong Kong</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Wan Chai</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Guangzhou</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Propriano</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Kanagawa Prefecture</a>
+            </li>
+            <li class="service-item">
+              <a href="javascript:;">Wistow</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <Footer></Footer>
@@ -243,10 +371,34 @@
   import Header from '../components/Header';
   import Footer from '../components/Footer';
   import ImageList from '../components/ImageList';
+  import MovePlusList from '../components/MovePlusList';
   export default {
     name: 'Datail',
+    props: ['id'],
     components: {
-      Header, Footer, ImageList
+      Header, Footer, ImageList, MovePlusList
+    },
+    data () {
+      return {
+        infoData: [],
+        airbnbPlusData: []
+      };
+    },
+    methods: {
+      async getDatail () {
+        const {data} = await this.axios.get(`/api/categoryList/${this.id}`);
+        this.infoData = data;
+        console.log(data);
+      },
+      async getAirbnbPlusData () {
+        const { data } = await this.axios.get('/api/airbnbPlus');
+        this.airbnbPlusData = data;
+        // console.log(data);
+      }
+    },
+    mounted () {
+      this.getAirbnbPlusData();
+      this.getDatail();
     }
   };
 </script>
@@ -710,6 +862,16 @@
             }
           }
         }
+        .notice{
+          .notice-list{
+            .left-title{
+              width: 30%;
+            }
+            .right-text{
+              width: 70%;
+            }
+          }
+        }
       }
       .order{
         /*display: inline-block;*/
@@ -717,6 +879,9 @@
         background-color: pink;
         height: 400px;
       }
+    }
+    .live{
+      overflow: hidden;
     }
   }
 }

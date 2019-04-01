@@ -53,7 +53,7 @@
       <h3 class="title">超过300个房源</h3>
       <div class="info">
         <div class="normal-show" v-if="!showmap">
-          <CategoryList :data="this.categoryData_1"></CategoryList>
+          <CategoryList :data="this.categoryData_1" @clickItem="goToDetail"></CategoryList>
           <div class="banner">
             <div class="wrapper clearfix">
               <div class="img fl">
@@ -65,7 +65,7 @@
               </div>
             </div>
           </div>
-          <CategoryList :data="this.categoryData_2"></CategoryList>
+          <CategoryList :data="this.categoryData_2" @clickItem="goToDetail"></CategoryList>
           <div class="paging">
             <div class="btn-group">
               <a href="javascript:;" class="btn-item active">1</a>
@@ -83,7 +83,7 @@
         </div>
         <div class="map-show clearfix" v-if="showmap">
           <div class="map-list fl">
-            <MapCategoryList :data="this.categoryData_1"></MapCategoryList>
+            <MapCategoryList :data="this.categoryData_1" @clickItem="goToDetail"></MapCategoryList>
             <div class="banner banner-small">
               <div class="wrapper clearfix">
                 <div class="img fl img-small">
@@ -95,7 +95,7 @@
                 </div>
               </div>
             </div>
-            <MapCategoryList :data="this.categoryData_2"></MapCategoryList>
+            <MapCategoryList :data="this.categoryData_2" @clickItem="goToDetail"></MapCategoryList>
             <div class="paging">
               <div class="btn-group">
                 <a href="javascript:;" class="btn-item active">1</a>
@@ -205,6 +205,14 @@
         }
         // console.log(result);
         return result;
+      },
+      goToDetail (item) {
+        this.$router.push({
+          name: 'Datail',
+          params: {
+            id: item.id
+          }
+        });
       }
     },
     mounted () {

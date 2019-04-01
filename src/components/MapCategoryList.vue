@@ -1,55 +1,33 @@
 <template>
   <div class="map-list">
     <ul class="clearfix">
-      <li class="list-item fl" @click="goToDatail" v-for="(item,index) in data" :key="index">
+      <li class="list-item fl" @click="clickItem(item)" v-for="(item,index) in data" :key="index">
         <a href="javascript:;" class="clearfix">
-          <div class="img fl">
-            <div class="img-wrap clearfix mal" :style="[maL,imgWrapWidth]">
-              <div class="list-item fl" v-for="(img,list) in item.pdp_listing_detail.photos" :key="list">
-                <img :src="img.picture" alt="" class="fl">
-              </div>
-              <!--<div class="list-item fl">-->
-              <!--<img src="../assets/images/banner2.jpg" alt="" class="fl">-->
-              <!--</div>-->
-            </div>
-            <div class="arrow clearfix">
-              <span class="iconfont left icon fl" @click.stop="up">&#xe644;</span>
-              <span class="iconfont right icon fr" @click.stop="next(item.pdp_listing_detail.photos.length)">&#xe646;</span>
-            </div>
-            <div class="round">
-              <span class="round-item big"></span>
-              <span class="round-item"></span>
-              <span class="round-item"></span>
-              <span class="round-item"></span>
-              <span class="round-item"></span>
-              <span class="round-item small"></span>
-            </div>
-            <span class="iconfont love">&#xe62a;</span>
-          </div>
+          <ImgSwitch :data="item"></ImgSwitch>
           <div class="right-info fl clearfix">
             <div class="room-info fl">
               <div class="room-desc">
-                {{item.pdp_listing_detail.room_and_property_type}}
+                {{item.room_and_property_type}}
                 <span class="room-number">
-                {{item.pdp_listing_detail.bedroom_label}}{{item.pdp_listing_detail.bathroom_label}}
-                {{item.pdp_listing_detail.bed_label}}
+                {{item.bedroom_label}}{{item.bathroom_label}}
+                {{item.bed_label}}
               </span>
               </div>
               <div class="desc clearfix">
-                <p class="title fl">{{item.pdp_listing_detail.name}}</p>
+                <p class="title fl">{{item.name}}</p>
               </div>
               <div class="label">
                 <!--<a href="javascript:;" class="item green"> <span class="count">条评论</span></a>-->
                 <!--<a href="javascript:;" class="item zan">超赞房东</a>-->
-                <a href="javascript:;" class="item" :class="{zan:name.type === 'PRIMARY'}" v-for="(name,li) in item.pdp_listing_detail.preview_tags" :key="li">{{name.name}}</a>
+                <a href="javascript:;" class="item" :class="{zan:name.type === 'PRIMARY'}" v-for="(name,li) in item.preview_tags" :key="li">{{name.name}}</a>
                 <!--<a href="javascript:;" class="item">自主入住</a>-->
               </div>
-              <div class="comment clearfix">
+              <div class="comment clearfix" v-if="item.sorted_reviews[0]">
                 <div class="name-img fl">
-                  <img src="" alt="">
+                  <img :src="item.sorted_reviews[0] && item.sorted_reviews[0].reviewer.picture_url" alt="">
                 </div>
                 <div class="text fl">
-                  {{item.pdp_listing_detail.sorted_reviews[0]}}
+                  {{item.sorted_reviews[0] && item.sorted_reviews[0].comments}}
                   <!--{{item.pdp_listing_detail.sorted_reviews[0].comments}}-->
                   <!--第一次住Nancy家房子完全超出了预期! 很干净!位置也很好找有公交直达!总之很满意了-->
                 </div>
@@ -65,7 +43,7 @@
               </div>
               <div class="text"><span class="iconfont icon">&#xe608;</span>春季特惠8.8折</div>
               <div class="user-img fr">
-                <img :src="item.pdp_listing_detail.user.profile_pic_path" alt="">
+                <img :src="item.user.profile_pic_path" alt="">
               </div>
             </div>
           </div>
@@ -76,6 +54,7 @@
 </template>
 
 <script>
+  import ImgSwitch from './ImgSwitch';
   export default {
     name: 'MapCategoryList',
     props: {
@@ -89,6 +68,9 @@
         type: Number,
         default: 303
       }
+    },
+    components: {
+      ImgSwitch
     },
     computed: {
       listWrapper () {
@@ -116,10 +98,11 @@
       };
     },
     methods: {
-      goToDatail () {
-        this.$router.push({
-          name: 'Datail'
-        });
+      clickItem (item) {
+        // this.$router.push({
+        //   name: 'Datail'
+        // });
+        this.$emit('clickItem', item);
       },
       up () {
         if (this.move !== 0) {
@@ -154,113 +137,19 @@
     padding: 0 10px;
     box-sizing: border-box;
     margin-top: 20px;
-    .img{
+    /deep/ .img{
+      float: left;
       width: 35%;
       height: 200px;
-      /*background-color: pink;*/
-      position: relative;
-      overflow: hidden;
-      &:hover .arrow{
-        display: block;
-      }
-      &:hover:after{
-        display: inline-block;
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgba(0,0,0,.1);
-      }
-      .arrow{
-        display: none;
-        width: 100%;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 999;
-        margin: 0 auto;
-        .icon{
-          font-size: 30px;
-          font-weight: bolder;
-          color: #fff;
-        }
-        .left{
-          font-size: 27px !important;
-          margin-left: 4%;
-        }
-        .right{
-          margin-right: 4%;
-        }
-      }
-      .round{
-        position: absolute;
-        bottom: 2.5%;
-        left: 50%;
-        transform: translateX(-50%);
-        .big{
-          height: 8px !important;
-          width: 8px !important;
-          background-color: #fff !important;
-        }
-        .round-item{
-          display: inline-block;
-          height: 6px;
-          width: 6px;
-          background-color: rgba(255,255,255,0.8);
-          border-radius: 50%;
-          margin-right: 10px;
-        }
-        .small{
-          display: inline-block;
-          height: 4px;
-          width: 4px;
-        }
-      }
-      .love{
-        position: absolute;
-        font-size: 33px;
-        color: #fff;
-        top: 2%;
-        right: 6%;
-      }
-      .type{
-        position: absolute;
-        top: 8%;
-        left: 6%;
-        font-size: 12px;
-        font-weight: bolder;
-        color: rgb(72, 72, 72);
-        padding: 5px 6px;
-        border-radius: 3px;
-        background-color: #fff;
-      }
       .img-wrap{
-        /*width: 100%;*/
-        /*width: 552px;*/
         height: 200px;
         .list-item{
           margin: 0;
           padding: 0;
           width: 303px;
           height: 200px;
-          background-color: red;
-          img{
-            border-radius: 5px;
-            width: 100%;
-            height: 100%;
-          }
         }
       }
-      .mal{
-        transition: all .3s;
-      }
-      /*img{*/
-      /*border-radius: 5px;*/
-      /*width: 100%;*/
-      /*height: 100%;*/
-      /*}*/
     }
     .right-info{
       box-shadow: 0 1px 3px rgba(0,0,0, .3);
@@ -313,7 +202,7 @@
           .name-img{
             height: 40px;
             width: 40px;
-            background-color: deeppink;
+            /*background-color: deeppink;*/
             img{
               height: 100%;
               width: 100%;
@@ -372,7 +261,7 @@
           .name-img{
             height: 24px;
             width: 24px;
-            background-color: pink;
+            /*background-color: pink;*/
             img{
               height: 100%;
               width: 100%;
