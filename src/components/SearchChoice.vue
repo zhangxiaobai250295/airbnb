@@ -45,13 +45,6 @@
                           end-placeholder="退房日期">
           </el-date-picker>
         </div>
-        <!--<div class="number box-item">-->
-          <!--<span class="iconfont icon">&#xe6b6;</span>-->
-          <!--<span>人数</span>-->
-        <!--</div>-->
-        <!--<div class="btn box-item">-->
-          <!--<a href="javascript:;">搜索</a>-->
-        <!--</div>-->
         <div class="right-wrap">
           <div class="number box-item" @click="showNumber">
             <span class="iconfont icon">&#xe6b6;</span>

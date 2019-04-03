@@ -4,8 +4,8 @@
       <li class="goods-item fl" v-for="(item,index) in data" :key="index">
         <a href="javascript:;">
           <img :src="item.imgUrl" alt="" class="goods-img">
-          <div class="room-desc" v-if="item.roomDesc">{{item.roomDesc}}<span class="room-number" v-if="item.roomNumber">{{item.roomNumber}}张床</span></div>
-          <div class="room-desc color" v-if="item.validate"><span class="plus">plus</span> 已验证<span class="room-number">{{item.city}}张床</span></div>
+          <div class="room-desc" v-if="item.roomDesc">{{item.roomDesc}} <span class="room-number" v-if="item.city">{{item.city}}</span><span class="room-number" v-if="item.roomNumber">{{item.roomNumber}}张床</span></div>
+          <div class="room-desc color" v-if="item.validate"><span class="plus">plus</span> 已验证<span class="room-number">{{item.city}}</span></div>
           <p class="title">{{item.title}}</p>
           <p class="titleDesc" v-if="item.titleDesc">{{item.titleDesc}}</p>
           <div class="price-wrap clearfix" v-if="item.price">
@@ -21,7 +21,7 @@
           <div class="evaluate" v-if="item.evaluate">
             <span class="iconfont icon">&#xe643;&#xe643;&#xe643;&#xe643;&#xe643;</span>
             <span class="number">{{item.evaluate}}</span>
-            <span class="zan" v-if="!item.validate">超赞房东</span>
+            <span class="zan" v-if="!item.validate && !item.love">超赞房东</span>
           </div>
         </a>
       </li>

@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Index from '../view/Index';
 import Category from '../view/Category';
 import Datail from '../view/Datail';
+import Order from '../view/Order';
 
 Vue.use(Router);
 
@@ -24,6 +25,11 @@ export default new Router({
       name: 'Datail',
       component: Datail,
       props: true
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order
     }
   ]
 });

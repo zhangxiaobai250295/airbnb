@@ -77,6 +77,8 @@
                 <a href="javascript:;">
                   <div class="big-img">
                     <img :src="item.imgUrl" alt="" class="">
+                    <span class="type">{{item.type}}</span>
+                    <span class="iconfont good-icon">&#xe62b;</span>
                   </div>
                   <div class="text">
                     <span class="city">{{item.city}}</span>
@@ -89,8 +91,6 @@
                     <span class="iconfont good">&#xe62b;&nbsp;{{item.good}}</span>
                     <span class="iconfont comment">&#xe612;&nbsp;{{item.comment}}</span>
                   </div>
-                  <span class="type">{{item.type}}</span>
-                  <span class="iconfont good-icon">&#xe62b;</span>
                 </a>
               </li>
             </ul>
@@ -334,10 +334,33 @@
           height: 246px;
           /*background-color: pink;*/
           margin-bottom: 5px;
+          position: relative;
           img{
             width: 100%;
             height: 100%;
             border-radius: 5px;
+          }
+          .type{
+            display: inline-block;
+            position: absolute;
+            font-size: 12px;
+            color: #484848;
+            font-weight: bolder;
+            right: 5%;
+            bottom: 5%;
+            width: 40px;
+            height: 26px;
+            line-height: 26px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+          }
+          .good-icon{
+            position: absolute;
+            font-size: 33px;
+            top: 0;
+            right: 3%;
+            color: #fff;
           }
         }
         .text{
@@ -371,28 +394,6 @@
             font-size: 14px;
             color: rgb(118, 118, 118);
           }
-        }
-        .type{
-          display: inline-block;
-          position: absolute;
-          font-size: 12px;
-          color: #484848;
-          font-weight: bolder;
-          right: 5%;
-          bottom: 30%;
-          width: 40px;
-          height: 26px;
-          line-height: 26px;
-          text-align: center;
-          background-color: #fff;
-          border-radius: 5px;
-        }
-        .good-icon{
-          position: absolute;
-          font-size: 33px;
-          top: 0;
-          right: 3%;
-          color: #fff;
         }
       }
       .showtotal{
