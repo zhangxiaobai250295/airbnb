@@ -619,7 +619,7 @@
       goToOrder () {
         this.$router.push({
           name: 'Order'
-        })
+        });
       }
     },
     mounted () {
