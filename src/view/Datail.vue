@@ -3,7 +3,7 @@
     <Header></Header>
     <div class="content">
       <div class="img-list">
-        <ImageList></ImageList>
+        <ImageList :data="this.infoData.photos" :title="this.infoData.name"></ImageList>
       </div>
       <div class="wrapper">
         <div class="nav">
@@ -18,15 +18,15 @@
           <div class="goods-info fl">
             <div class="goods">
               <div class="room">
-                <span class="city">广州市</span>
-                <span class="room-desc">整套公寓</span>
+                <span class="city">{{this.infoData.localized_city}}</span>
+                <span class="room-desc">{{this.infoData.room_and_property_type}}</span>
               </div>
-              <h3 class="title">公园前双地铁/北京路上下九/机场/南站投影大床房</h3>
+              <h3 class="title">{{this.infoData.name}}</h3>
               <div class="room-label">
-                <span class="iconfont icon">&#xe61e;<span class="text">1间卧室</span></span>
-                <span class="iconfont icon">&#xe605;<span class="text">2张床</span></span>
-                <span class="iconfont icon">&#xe60b;<span class="text">1间卫生间</span></span>
-                <span class="iconfont icon">&#xe6b6;<span class="text">最多住3人</span></span>
+                <span class="iconfont icon">&#xe61e;<span class="text">{{this.infoData.bedroom_label}}</span></span>
+                <span class="iconfont icon">&#xe605;<span class="text">{{this.infoData.bed_label}}</span></span>
+                <span class="iconfont icon">&#xe60b;<span class="text">{{this.infoData.bathroom_label}}</span></span>
+                <span class="iconfont icon">&#xe6b6;<span class="text">{{this.infoData.guest_label}}</span></span>
               </div>
               <div class="type">
                 <span>新房源</span>
@@ -34,28 +34,31 @@
               </div>
             </div>
             <div class="landlord clearfix">
-              <img src="" alt="" class="landlord-img fl">
+              <img :src="this.infoData.user && this.infoData.user.profile_pic_path" alt="" class="landlord-img fl">
               <div class="landlord-info fl">
-                <p><span class="name">房东： 林梅</span><a href="javascript:;" class="contact">联系房东</a></p>
-                <p class="text">共收到55条评价 · 已验证</p>
+                <p><span class="name">房东： {{this.infoData.user && this.infoData.user.host_name}}</span><a href="javascript:;" class="contact">联系房东</a></p>
+                <p class="text" v-if="this.infoData.primary_host && this.infoData.primary_host.host_intro_tags.length === 2">{{this.infoData.primary_host && this.infoData.primary_host.host_intro_tags[0]}}
+                  <span>· {{this.infoData.primary_host && this.infoData.primary_host.host_intro_tags[1]}}</span>
+                </p>
+                <p class="text" v-if="this.infoData.primary_host && this.infoData.primary_host.host_intro_tags.length === 1">{{this.infoData.primary_host && this.infoData.primary_host.host_intro_tags[0]}}
+                </p>
               </div>
               <div class="popup fl">
                 <span><em></em></span>
-                <p>我家坐落于广州北京路闹市中的一片净地,在空中18楼有一个欧式美丽花园,
-                  这里没有吵闹的车声,能给你一个舒适宁静的夜晚｡我的房源位于繁华的解放路
-                  与中山五路交界处,在对面是机场快线和港澳直通巴士站,周边有陶街尚业街､惠福路美食街一条街,
+                <p>
+                  {{this.infoData.sectioned_description && this.infoData.sectioned_description.description}}
                 </p>
                 <a href="javascript:;" class="more">更多房源介绍</a>
               </div>
             </div>
             <div class="room-desc clearfix">
-              <div class="item fl">
-                <span class="title">卧室1</span>
+              <div class="item fl" v-for="(item,index) in this.infoData.hometour_rooms" :key="index">
+                <span class="title">{{item.name_with_type}}</span>
                 <div>
                   <span class="iconfont icon">&#xe607;</span>
                   <span class="iconfont icon">&#xe61d;</span>
                 </div>
-                <span>1张小号双人床, 1张沙发床</span>
+                <span>{{item.highlights_hometour[0]}} <span v-if="item.highlights_hometour[1]">,{{item.highlights_hometour[1]}}</span></span>
               </div>
             </div>
             <div class="room-info">
@@ -63,9 +66,12 @@
                 <span class="title">整套房子/公寓</span>
                 <span class="text">无需与房东或房客共享空间，独享整个房源</span>
               </div>
-              <div class="info-item">
-                <span class="title">入住/退房</span>
-                <span class="text">入住时间 14:00 － 00:00 · 退房时间 12:00</span>
+              <div class="info-item" v-for="(info,list) in this.infoData.guest_controls && this.infoData.guest_controls.structured_house_rules_with_tips"
+                :key="list" v-if="info.key === 'check_in_time_and_check_out_time' || info.key === 'self_check_in'"
+              >
+                <span class="title" v-if="info.key !== 'self_check_in'">入住/退房</span>
+                <span class="title" v-if="info.key === 'self_check_in'">自助入住</span>
+                <span class="text">{{info.text}}</span>
               </div>
             </div>
             <div class="room-tool clearfix">
@@ -74,20 +80,20 @@
                 <p>无线网络</p>
               </div>
               <div class="tool-item fl">
-                <span class="iconfont icon">&#xe665;</span>
-                <p>无线网络</p>
+                <span class="iconfont icon">&#xe69d;</span>
+                <p>洗衣机</p>
               </div>
               <div class="tool-item fl">
-                <span class="iconfont icon">&#xe665;</span>
-                <p>无线网络</p>
+                <span class="iconfont icon">&#xe7fd;</span>
+                <p>电视</p>
               </div>
               <div class="tool-item fl">
-                <span class="iconfont icon">&#xe665;</span>
-                <p>无线网络</p>
+                <span class="iconfont icon">&#xe72f;</span>
+                <p>生活必需品</p>
               </div>
               <div class="tool-item fl">
-                <span class="iconfont icon">&#xe665;</span>
-                <p>无线网络</p>
+                <span class="iconfont icon">&#xe613;</span>
+                <p>吹风机</p>
               </div>
               <div class="tool-item fl">
                 <span class="iconfont text">5+</span>
@@ -103,7 +109,7 @@
                   <span class="iconfont icon-item">&#xe70b;</span>
                   <span class="iconfont icon-item">&#xe70b;</span>
                   <span class="iconfont icon-item">&#xe70b;</span>
-                  <span class="count">24条评价</span>
+                  <span class="count">{{this.infoData.review_details_interface && this.infoData.review_details_interface.review_count}}条评价</span>
                 </div>
                 <div class="search fr">
                   <div class="box">
@@ -113,8 +119,11 @@
                 </div>
               </div>
               <div class="comment-type clearfix">
-                <div class="type-item clearfix fl">
-                  <span class="type-title fl">如实描述</span>
+                <div class="type-item clearfix fl"
+                    v-for="(type,lists) in this.infoData.review_details_interface && this.infoData.review_details_interface.review_summary"
+                    :key="lists"
+                >
+                  <span class="type-title fl">{{type.label}}</span>
                   <div class="fr icon-wrap">
                     <span class="iconfont type-icon">&#xe70b;</span>
                     <span class="iconfont type-icon">&#xe70b;</span>
@@ -123,90 +132,52 @@
                     <span class="iconfont type-icon">&#xe70b;</span>
                   </div>
                 </div>
-                <div class="type-item clearfix fl">
-                  <span class="type-title fl">如实描述</span>
-                  <div class="fr icon-wrap">
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                  </div>
-                </div>
-                <div class="type-item clearfix fl">
-                  <span class="type-title fl">如实描述</span>
-                  <div class="fr icon-wrap">
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                  </div>
-                </div>
-                <div class="type-item clearfix fl">
-                  <span class="type-title fl">如实描述</span>
-                  <div class="fr icon-wrap">
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                    <span class="iconfont type-icon">&#xe70b;</span>
-                  </div>
-                </div>
+                <!--<div class="type-item clearfix fl">-->
+                  <!--<span class="type-title fl">如实描述</span>-->
+                  <!--<div class="fr icon-wrap">-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="type-item clearfix fl">-->
+                  <!--<span class="type-title fl">如实描述</span>-->
+                  <!--<div class="fr icon-wrap">-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="type-item clearfix fl">-->
+                  <!--<span class="type-title fl">如实描述</span>-->
+                  <!--<div class="fr icon-wrap">-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                    <!--<span class="iconfont type-icon">&#xe70b;</span>-->
+                  <!--</div>-->
+                <!--</div>-->
               </div>
               <div class="comment-list">
-                <div class="list-item clearfix">
+                <div class="list-item clearfix"
+                     v-for="(comment,comlist) in this.infoData.sorted_reviews" :key="comlist"
+                >
                   <div class="name-img fl">
-                    <img src="" alt="">
+                    <img :src="comment.reviewer.picture_url" alt="">
                   </div>
                   <div class="name-info fl">
-                    <div class="name clearfix">Hooray <span class="iconfont fr">&#xe6d5;</span></div>
-                    <div class="date">2019年3月</div>
+                    <div class="name clearfix">{{comment.reviewer.first_name}} <span class="iconfont fr">&#xe6d5;</span></div>
+                    <div class="date">{{comment.localized_date}}</div>
                   </div>
-                  <div class="text">交通便利,窗明几净,床铺舒服,房东热情｡</div>
-                </div>
-                <div class="list-item clearfix">
-                  <div class="name-img fl">
-                    <img src="" alt="">
-                  </div>
-                  <div class="name-info fl">
-                    <div class="name clearfix">Hooray <span class="iconfont fr">&#xe6d5;</span></div>
-                    <div class="date">2019年3月</div>
-                  </div>
-                  <div class="text">交通便利,窗明几净,床铺舒服,房东热情｡</div>
-                </div>
-                <div class="list-item clearfix">
-                  <div class="name-img fl">
-                    <img src="" alt="">
-                  </div>
-                  <div class="name-info fl">
-                    <div class="name clearfix">Hooray <span class="iconfont fr">&#xe6d5;</span></div>
-                    <div class="date">2019年3月</div>
-                  </div>
-                  <div class="text">交通便利,窗明几净,床铺舒服,房东热情｡</div>
-                </div>
-                <div class="list-item clearfix">
-                  <div class="name-img fl">
-                    <img src="" alt="">
-                  </div>
-                  <div class="name-info fl">
-                    <div class="name clearfix">Hooray <span class="iconfont fr">&#xe6d5;</span></div>
-                    <div class="date">2019年3月</div>
-                  </div>
-                  <div class="text">交通便利,窗明几净,床铺舒服,房东热情｡</div>
-                </div>
-                <div class="list-item clearfix">
-                  <div class="name-img fl">
-                    <img src="" alt="">
-                  </div>
-                  <div class="name-info fl">
-                    <div class="name clearfix">Hooray <span class="iconfont fr">&#xe6d5;</span></div>
-                    <div class="date">2019年3月</div>
-                  </div>
-                  <div class="text">交通便利,窗明几净,床铺舒服,房东热情｡</div>
+                  <div class="text">{{comment.comments}}</div>
                 </div>
               </div>
-              <div class="other clearfix">
+              <div class="other clearfix" v-if="this.infoData.sorted_reviews && this.infoData.sorted_reviews.length !== 0">
                 <div class="page-wrap fl">
                   <a href="javascript:;" class="page-item active">1</a>
                   <a href="javascript:;" class="page-item">2</a>
@@ -237,8 +208,7 @@
               <div class="position-info">
                 <div class="position-item">
                   <div class="item-title">
-                    <span class="list">上海</span>,
-                    <span class="list">中国</span>
+                    <span class="list">{{this.infoData.location_title}}</span>,
                   </div>
                   <div class="item-text">
                     <p>条条百年名路,梧桐繁茂｡排排历史建筑,岁月沧桑｡</p>
@@ -260,17 +230,17 @@
               <div class="position-list">
                 <ul>
                   <li class="list-item">
-                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
+                    <span class="iconfont">&#xe6bc;</span>房源具体位置将在预订确认后提供
                   </li>
-                  <li class="list-item">
-                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
-                  </li>
-                  <li class="list-item">
-                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
-                  </li>
-                  <li class="list-item">
-                    <span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）
-                  </li>
+                  <!--<li class="list-item">-->
+                    <!--<span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）-->
+                  <!--</li>-->
+                  <!--<li class="list-item">-->
+                    <!--<span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）-->
+                  <!--</li>-->
+                  <!--<li class="list-item">-->
+                    <!--<span class="iconfont">&#xe64c;</span>周边热门：珠江新城（约1.7公里）"、"广东省博物馆（约2.5公里）"、"广州塔（约3.1公里）-->
+                  <!--</li>-->
                 </ul>
                 <a href="javascript:;" class="more">查看更多周边信息</a>
               </div>
@@ -281,15 +251,18 @@
                 <li class="list-item clearfix">
                   <div class="left-title fl">基本要求</div>
                   <div class="right-text fl">
-                    <div class="text-item">
-                      不允许携带宠物
+                    <div class="text-item"
+                         v-for="(notice,noticelist) in this.infoData.guest_controls && this.infoData.guest_controls.structured_house_rules"
+                         :key="noticelist"
+                    >
+                      {{notice}}
                     </div>
-                    <div class="text-item">
-                      禁止吸烟、派对或活动
-                    </div>
-                    <div class="text-item">
-                      15:00后可以随时入住，12:00前退房
-                    </div>
+                    <!--<div class="text-item">-->
+                      <!--禁止吸烟、派对或活动-->
+                    <!--</div>-->
+                    <!--<div class="text-item">-->
+                      <!--15:00后可以随时入住，12:00前退房-->
+                    <!--</div>-->
                     <div class="rules">
                       <a href="javascript:;" class="more">房屋守则</a>
                     </div>
@@ -318,15 +291,24 @@
               <h3 class="landlord_2-title">房东</h3>
               <div class="landlord_2-info clearfix">
                 <div class="left-text fl">
-                  <div class="name">泽彬 <a href="javascript:;" class="more">联系房东</a></div>
-                  <div class="city-time">China, 中国 · 注册时间：2016年5月</div>
+                  <div class="name">{{this.infoData.primary_host && this.infoData.primary_host.host_name}} <a href="javascript:;" class="more">联系房东</a></div>
+                  <div class="city-time">
+                    {{this.infoData.primary_host && this.infoData.primary_host.location_long}} ·
+                    {{this.infoData.primary_host && this.infoData.primary_host.member_since_full_str}}
+                  </div>
                   <div class="type clearfix">
-                    <div class="type-comment fl"><span class="color">63</span>条评论</div>
-                    <div class="type-validate fl"><img src="../assets/images/verified.png" alt="">已验证</div>
+                    <div class="type-comment fl">
+                      <span class="color">{{this.infoData.primary_host && this.infoData.primary_host.badges[0].count}}</span>
+                      条评论
+                    </div>
+                    <div class="type-validate fl">
+                      <img src="../assets/images/verified.png" alt="">
+                      已验证
+                    </div>
                   </div>
                 </div>
                 <div class="right-img fr">
-                  <img src="" alt="">
+                  <img :src="this.infoData.primary_host && this.infoData.primary_host.profile_pic_path" alt="">
                 </div>
               </div>
               <div class="interaction">
@@ -334,10 +316,12 @@
                 <p class="interac-text">有问题随时通过任何方式都可以联系我,没回复时请拨打我电话!</p>
                 <div class="interac-list">
                   <div class="interac-item">
-                    <span class="item-title">回复率：</span>100%
+                    <span class="item-title">回复率：</span>
+                    {{this.infoData.primary_host && this.infoData.primary_host.response_rate_without_na}}
                   </div>
                   <div class="interac-item">
-                    <span class="item-title">回复时间：</span>1小时内
+                    <span class="item-title">回复时间：</span>
+                    {{this.infoData.primary_host && this.infoData.primary_host.response_time_without_na}}
                   </div>
                 </div>
               </div>
@@ -352,12 +336,12 @@
               </div>
               <div class="goods-discount">
                 <span class="discount-item"><span class="iconfont icon active">&#xe608;</span>春季特惠8.8折</span>
-                <span class="discount-item"><span class="iconfont icon">&#xe608;</span>春季特惠8.8折</span>
-                <span class="discount-item"><span class="iconfont icon">&#xe608;</span>春季特惠8.8折</span>
+                <span class="discount-item"><span class="iconfont icon">&#xe608;</span>满七天立减6%</span>
+                <span class="discount-item"><span class="iconfont icon">&#xe608;</span>礼金卷</span>
               </div>
               <div class="goods-comment">
                 <span class="iconfont icon">&#xe70b;&#xe70b;&#xe70b;&#xe70b;&#xe70b;</span>
-                <span class="count">12条</span>
+                <span class="count">{{this.infoData.review_details_interface && this.infoData.review_details_interface.review_count}}条</span>
               </div>
             </div>
             <div class="input-wrap">
@@ -552,8 +536,8 @@
         showSelect: false,
         city: '',
         value6: '',
-        count: null,
-        adultCount: 0,
+        count: 1,
+        adultCount: 1,
         childrenCount: 0,
         babyCount: 0,
         babyAdd: null,
@@ -617,6 +601,12 @@
         this.showNumberselect = false;
       },
       goToOrder () {
+        this.$store.commit('addOrderData', {
+          data: this.infoData,
+          adultCount: this.adultCount,
+          childrenCount: this.childrenCount,
+          babyCount: this.babyCount
+        });
         this.$router.push({
           name: 'Order'
         });
@@ -658,151 +648,6 @@
   .content{
     .img-list{
       width: 100%;
-      .img-wrap{
-        position: relative;
-        .big-img{
-          padding: 2px;
-          box-sizing: border-box;
-          width: 50%;
-          height: 550px;
-          border: 1px solid #000;
-          overflow: hidden;
-          img{
-            height: 100%;
-            width: 100%;
-            display: inline-block;
-            background-color: pink;
-            transition: all .3s;
-          }
-          &:hover img{
-            transform: scale(1.1,1.1);
-          }
-        }
-        .small-img{
-          width: 50%;
-          .small-list{
-            padding: 2px;
-            box-sizing: border-box;
-            width: 50%;
-            height: 275px;
-            border: 1px solid #000;
-            overflow: hidden;
-
-            img{
-              display: inline-block;
-              height: 100%;
-              width: 100%;
-              background-color: deeppink;
-              transition: all .3s;
-            }
-            &:hover img{
-              transform: scale(1.1,1.1);
-            }
-          }
-        }
-        .btn-group{
-          position: absolute;
-          top: 6%;
-          right: 2%;
-          .wrap{
-            margin-left: 15px;
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 10px 15px;
-            box-sizing: border-box;
-            cursor: pointer;
-            .text{
-              margin-left: 5px;
-            }
-          }
-        }
-        .check{
-          position: absolute;
-          bottom: 5%;
-          right: 2%;
-          color: #484848;
-          font-size: 14px;
-          font-weight: bolder;
-          border-radius: 5px;
-          background-color: #fff;
-          padding: 8px 13px;
-          box-sizing: border-box;
-        }
-      }
-      .see-img{
-        .see-wrap{
-          position: fixed;
-          top: 0;
-          right: 0;
-          left: 0;
-          bottom: 0;
-          z-index: 99;
-          background-color: #484848;
-
-          .close{
-            height: 84px;
-            line-height: 84px;
-            text-align: right;
-            color: #fff;
-            /*background-color: red;*/
-            padding-right: 30px;
-            span{
-              font-size: 30px;
-            }
-          }
-          .info{
-            position: relative;
-            .img{
-              margin: 0 auto;
-              height: 500px;
-              width: 600px;
-              img{
-                display: inline-block;
-                background-color: pink;
-                height: 100%;
-                width: 100%;
-              }
-            }
-            .arrow{
-              padding-left: 30px;
-              padding-right: 30px;
-              box-sizing: border-box;
-              width: 100%;
-              position: absolute;
-              top: 50%;
-              left: 0;
-              transform: translateY(-50%);
-              .icon{
-                font-size: 43px;
-                font-weight: bolder;
-                color: #fff;
-                cursor: pointer;
-              }
-            }
-            .small{
-              width: 600px;
-              margin: 0 auto;
-              color: #fff;
-              .text{
-                /*text-align: center;*/
-                color: #fff;
-              }
-              .list-img{
-                width: 600px;
-                overflow: hidden;
-                .item-wrap{
-                  .img-item{
-                    width: 100px;
-                    height: 67px;
-                    margin-right: 10px;
-                    background-color: deeppink;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
     .nav{
       height: 49px;
@@ -992,6 +837,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-weight: normal;
+            margin-right: 10px;
             .title{
               font-weight: bolder;
             }
@@ -1472,7 +1318,7 @@
         .order-subtotal{
           margin-top: 10px;
           .subtotal-item{
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid #EBEBEB ;
             padding: 5px;
 
             .discount,.discount-price{

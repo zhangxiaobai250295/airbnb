@@ -27,9 +27,9 @@
             <div class="info-item user-number">
               <h3 class="title">房客</h3>
               <div class="number-box clearfix" @click="showNumber">
-                <span v-if="!this.count">1人</span>
+                <!--<span v-if="!this.count">1人</span>-->
                 <span v-if="this.count">{{this.count}}人</span>
-                <span v-if="this.babyAdd">,{{this.babyCount}}名婴幼儿</span>
+                <span v-if="this.babyCount">,{{this.babyCount}}名婴幼儿</span>
                 <div class="number-select" v-if="this.showNumberselect">
                   <ul>
                     <li class="clearfix">
@@ -62,7 +62,7 @@
                     </li>
                   </ul>
                 </div>
-                <span class="iconfont fr next">&#xe731;</span>
+                <span class="iconfont fr next" :class="{'next-move':showNumberselect}">&#xe731;</span>
               </div>
             </div>
             <div class="info-item objective clearfix">
@@ -97,44 +97,71 @@
                 <div class="data-item clearfix">
                   <div class="city fl">
                     <h4 class="title_2">国籍（地区）</h4>
-                    <div class="border item-box clearfix">
-                      111
+                    <div class="clearfix city-box" @click="showCountry">
+                      <select name="" id="">
+                        <option value="" disabled>选择国家（地区）</option>
+                        <option value="" selected>中国</option>
+                        <option value="">韩国</option>
+                        <option value="">Democratic Republic of the Congo</option>
+                        <option value="">阿尔巴尼亚</option>
+                        <option value="">阿尔及利亚</option>
+                        <option value="">阿富汗</option>
+                        <option value="">阿根廷</option>
+                        <option value="">阿拉伯联合酋长国</option>
+                        <option value="">阿鲁巴</option>
+                        <option value="">爱尔兰</option>
+                        <option value="">安圭拉</option>
+                        <option value="">韩国</option>
+                        <option value="">Democratic Republic of the Congo</option>
+                        <option value="">阿尔巴尼亚</option>
+                        <option value="">阿尔及利亚</option>
+                        <option value="">阿富汗</option>
+                        <option value="">阿根廷</option>
+                        <option value="">阿拉伯联合酋长国</option>
+                        <option value="">阿鲁巴</option>
+                        <option value="">爱尔兰</option>
+                        <option value="">安圭拉</option>
+                      </select>
                       <span class="iconfont fr next">&#xe731;</span>
                     </div>
                   </div>
                   <div class="type fl">
                     <h4 class="title_2">身份证件类型</h4>
-                    <div class="border item-box clearfix">
-                      222
+                    <div class="clearfix shenfen">
+                      <select name="" id="">
+                        <option value="">身份证</option>
+                        <option value="">护照</option>
+                      </select>
                       <span class="iconfont fr next">&#xe731;</span>
                     </div>
                   </div>
                   <div class="number fl">
                     <h4 class="title_2">身份证件号码</h4>
-                    <div class="border item-box">
-                      333
+                    <div class="border item-box num-box">
+                      <input type="text">
                     </div>
                   </div>
                 </div>
                 <div class="data-item">
                   <h3 class="title_2">姓名</h3>
                   <div class="name-box border">
-                    444
+                    <input type="text">
                   </div>
                 </div>
               </div>
             </div>
             <div class="info-item hello">
               <h3 class="title">和房东打个招呼</h3>
-              <div class="text">向Yujie简单介绍一下您自己，以及您旅行的目的。</div>
+              <div class="text">向{{orderDate[0] && orderDate[0].user.host_name}}简单介绍一下您自己，以及您旅行的目的。</div>
               <div class="text-box">
-                <textarea name="" id="" cols="30" rows="10">
-                  你好 Yujie，我叫 用鹏。在爱彼迎上看到你的房源，觉得好棒。希望能在这段时间内入住你的房源，谢谢！：)
+                <!--你好，我叫 用鹏。在爱彼迎上看到你的房源，觉得好棒。希望能在这段时间内入住你的房源，谢谢！：)-->
+                <!--{{this.count}}-->
+                <textarea name="" id="" cols="30" rows="10" v-model="text">
+
                 </textarea>
               </div>
               <div class="landlord-img ">
-                111
-                <img src="" alt="">
+                <img :src="orderDate[0] && orderDate[0].user.profile_pic_path" alt="">
               </div>
             </div>
             <div class="info-item volume">
@@ -150,21 +177,22 @@
             <div class="order-info right-item">
               <div class="room-data clearfix">
                 <div class="text fl">
-                  <div class="title">人民广场|高层电梯房|整套宽敞轻风INS风|地铁500m|仙人掌门</div>
-                  <div class="room-desc">黄浦的整套房子/公寓</div>
+                  <div class="title">{{this.orderDate[0].name}}</div>
+                  <div class="room-desc">{{this.orderDate[0].localized_city}}的{{this.orderDate[0].localized_room_type}}</div>
                   <div class="comment">
                     <span class="iconfont icon">&#xe70b;&#xe70b;&#xe70b;&#xe70b;&#xe70b;</span>
-                    <span class="number">12条评价</span>
+                    <span class="number">{{this.orderDate[0].review_details_interface.review_count}}review</span>
                   </div>
                 </div>
                 <div class="img fl">
-                  <img src="" alt="">
+                  <img :src="this.orderDate[0].photos[0].picture" alt="">
                 </div>
               </div>
               <div class="number-time">
                 <div class="number">
                   <span class="iconfont icon">&#xe6b6;</span>
-                  <span>1人</span>
+                  <span v-if="this.count">{{this.count}}人</span>
+                  <span v-if="this.babyCount">,{{this.babyCount}}名婴幼儿</span>
                 </div>
                 <div class="time clearfix">
                   <span class="iconfont fl icon">&#xe719;</span>
@@ -225,10 +253,16 @@
             </div>
             <div class="room-rult right-item">
               <div class="title">房屋守则</div>
-              <div class="rult-item">禁止吸烟</div>
-              <div class="rult-item">不允许举办派对和活动</div>
-              <div class="rult-item">15:00后可以随时入住</div>
-              <a href="javascript:;">查看全部</a>
+              <div class="rult-item"
+                   v-for="(rult,rultList) in this.orderDate[0].guest_controls.p3_structured_house_rules"
+                   :key="rultList"
+              >
+                {{rult}}
+              </div>
+              <!--<div class="rult-item">不允许举办派对和活动</div>-->
+              <!--<div class="rult-item">15:00后可以随时入住</div>-->
+              <a href="javascript:;" @click="PopShow">查看全部</a>
+              <PopUp :show.sync="popshow"></PopUp>
             </div>
           </div>
         </div>
@@ -252,8 +286,16 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+  import PopUp from '../components/PopUp';
   export default {
     name: 'Order',
+    components: {
+      PopUp
+    },
+    computed: {
+      ...mapState(['orderDate'])
+    },
     data () {
       return {
         count: null,
@@ -262,7 +304,10 @@
         babyCount: 0,
         babyAdd: null,
         showNumberselect: false,
-        showmap: false
+        showmap: false,
+        showcountry: false,
+        popshow: false,
+        text: ''
       };
     },
     methods: {
@@ -313,7 +358,28 @@
       },
       showMap () {
         this.showmap = !this.showmap;
+      },
+      showCountry () {
+        this.showcountry = true;
+      },
+      PopShow () {
+        // alert(111);
+        this.popshow = true;
+      },
+      defaultData () {
+        this.count = parseInt(this.orderDate[0].adultCount) + parseInt(this.orderDate[0].childrenCount);
+        this.babyCount = parseInt(this.orderDate[0].babyCount);
+        this.adultCount = parseInt(this.orderDate[0].adultCount);
+        this.childrenCount = parseInt(this.orderDate[0].childrenCount);
+        this.text = `你好 ${this.orderDate[0].user.host_name}，我叫 用鹏。在爱彼迎上看到你的房源，觉得好棒。希望能在这段时间内入住你的房源，谢谢！：)`;
+        // console.log(this.orderDate.adultCount);
+        // console.log(this.orderDate.childrenCount);
+        // console.log(this.orderDate);
       }
+    },
+    mounted () {
+      // console.log(this.orderDate);
+      this.defaultData();
     }
   };
 </script>
@@ -403,7 +469,12 @@
             width: 290px;
             position: relative;
             .next{
+              transition: all .3s;
               font-size: 30px;
+            }
+            .next-move{
+              transition: all .3s;
+              transform: rotate(180deg);
             }
             .number-select{
               display: inline-block;
@@ -546,9 +617,45 @@
                 height: 46px;
                 line-height: 46px;
               }
+              .city-box{
+
+              }
+              .city-box,.shenfen{
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                line-height: 46px;
+                position: relative;
+                select{
+                  display: inline-block;
+                  width: 100%;
+                  box-sizing: border-box;
+                  padding: 14px 40px 14px 11px;
+                }
+                .next{
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                }
+              }
+              input{
+                width: 100%;
+                font-size: 16px;
+                border: none;
+              }
               .city,.type{
                 width: 22%;
                 margin-right: 4%;
+              }
+              .city{
+                /*overflow: hidden;*/
+              }
+              select{
+                display: inline-block;
+                width: 68px;
+                -webkit-appearance:none;
+                -moz-appearance:none;
+                appearance:none;
+                border: none;
               }
               .number{
                 width: 48%;
@@ -573,7 +680,7 @@
               color: #484848;
               border-radius: 4px;
               text-align: left;
-              text-indent: -128px;
+              /*text-indent: -128px;*/
               padding: 15px 10px 6px;
               box-sizing: border-box;
               border-color: #ccc;
@@ -694,9 +801,18 @@
                 color: #008489;
               }
             }
+            .symbol{
+              display: inline-block;
+              height: 15px;
+              width: 15px;
+              border-radius: 50%;
+              line-height: 15px;
+              text-align: center;
+              border: 1px solid #484848;
+            }
             .total{
               margin-top: 10px;
-              border-top: 1px solid #ccc;
+              border-top: 1px solid #EBEBEB ;
               padding-top: 20px;
               font-size: 16px;
               font-weight: bolder;

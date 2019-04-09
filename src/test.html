@@ -3,27 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <!--<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />-->
-    <style>
-      html,
-      body,
-      #container {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+  <style>
+
+  </style>
 </head>
 <body>
-  <div id="container">
+  <div class="box">
 
   </div>
-  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.13&key=72628c1f5ba9e6d264d8873d743fc993"></script>
   <script>
-    var map = new AMap.Map('container', {
-      resizeEnable: true, //是否监控地图容器尺寸变化
-      zoom:11, //初始化地图层级
-      center: [116.397428, 39.90923] //初始化地图中心点
-    });
+    var str = '寻找那一个特别的你 房间总面积为:60平方米  1.8米大床房↵独立卫浴(浴缸､智能马桶及淋浴间)';
+    console.log(str.indexOf('  '));
   </script>
 </body>
 </html>

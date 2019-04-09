@@ -76,6 +76,8 @@
         }
         if (this.move > (this.defaultDataLength - 4)) {
           this.showRight = false;
+          console.log(this.move);
+          console.log(this.showRight);
         }
 
         // console.log(this.moveLeft);
@@ -86,6 +88,11 @@
           this.moveLeft = '-' + this.move * this.width;
           // console.log(this.move);
           // console.log(this.moveLeft);
+        }
+        if (this.move < (this.defaultDataLength - 3)) {
+          this.showRight = true;
+          // console.log(this.move);
+          // console.log(this.showRight);
         }
       }
     },

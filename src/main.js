@@ -4,6 +4,7 @@ import router from './router';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueAMap from 'vue-amap';
+import store from './store';
 // 引入重置样式、字体图标和公共样式
 import './assets/css/reset.css';
 import './assets/css/iconfont.css';
@@ -40,5 +41,6 @@ Vue.prototype.globalClick = function (callback) {
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 });

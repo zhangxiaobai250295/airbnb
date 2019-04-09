@@ -19,7 +19,7 @@
           </div>
           <div class="evaluate">
             <span class="iconfont icon">&#xe643;&#xe643;&#xe643;&#xe643;&#xe643;</span>
-            <span class="number">{{item.visible_review_count}}</span>
+            <span class="number">{{item.visible_review_count || '暂无评论'}}</span>
           </div>
           <div class="price-wrap clearfix">
             <span class="price fl">￥253</span>
