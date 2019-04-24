@@ -9,9 +9,9 @@
               <div class="room-desc">
                 {{item.room_and_property_type}}
                 <span class="room-number">
-                {{item.bedroom_label}}{{item.bathroom_label}}
-                {{item.bed_label}}
-              </span>
+                  {{item.bedroom_label}}{{item.bathroom_label}}
+                  {{item.bed_label}}
+                </span>
               </div>
               <div class="desc clearfix">
                 <p class="title fl">{{item.name}}</p>

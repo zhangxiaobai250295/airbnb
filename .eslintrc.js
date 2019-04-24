@@ -3,6 +3,7 @@
 module.exports = {
   "globals":{
     "AMap":"AMap",
+    "AMapUI":"AMapUI",
     "particlesJs":true,
     "expect":true,
     "sinon":true

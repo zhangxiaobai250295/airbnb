@@ -256,7 +256,11 @@
                 </div>
               </div>
               <div class="map" style="height: 280px;background-color: pink;margin-bottom: 20px">
-                <el-amap vid="amap"></el-amap>
+                <!--<el-amap vid="amap" :zoom="zoom" :center="center">-->
+                  <!--<el-amap-marker  v-for="(marker,index) in markers" :center="marker.center" :radius="marker.radius" :fill-color="marker.fillColor" :fill-opacity="marker.fillOpacity" :events="marker.events" :key="index"></el-amap-marker>-->
+                <!--</el-amap>-->
+                <el-amap vid="amapDemo"  :center="center && center" :map-manager="amapManager" :zoom="zoom" :events="events" class="amap-demo">
+                </el-amap>
               </div>
               <div class="position-list">
                 <ul>
@@ -561,6 +565,8 @@
   import ImageList from '../components/ImageList';
   import MovePlusList from '../components/MovePlusList';
   import PopUp from '../components/PopUp';
+  import { AMapManager } from 'vue-amap';
+  let amapManager = new AMapManager();
   export default {
     name: 'Datail',
     props: ['id'],
@@ -585,7 +591,20 @@
         showRules: false,
         showCity: false,
         showAbout: false,
-        timeArray: []
+        timeArray: [],
+        zoom: 12,
+        center: [116.45967, 39.93703],
+        amapManager,
+        events: {
+          init (map) {
+            AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
+              return new SimpleMarker({
+                map: map,
+                position: map.getCenter()
+              });
+            });
+          }
+        }
       };
     },
     methods: {
@@ -603,6 +622,8 @@
       async getDatail () {
         const {data} = await this.axios.get(`/api/categoryList/${this.id}`);
         this.infoData = data;
+        // this.markers[0].center = [Number(this.infoData.lng), Number(this.infoData.lat)];
+        this.center = [Number(this.infoData.lng), Number(this.infoData.lat)];
         console.log(data);
       },
       async getLoveData () {
