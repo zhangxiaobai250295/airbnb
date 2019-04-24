@@ -197,9 +197,9 @@
                 <div class="time clearfix">
                   <span class="iconfont fl icon">&#xe719;</span>
                   <div class="fl">
-                    <span>2019年4月14日</span>
+                    <span>{{this.orderDate[0].startTime}}</span>
                     <span class="iconfont">&#xe624;</span>
-                    <span>2019年4月15日</span>
+                    <span>{{this.orderDate[0].endTime}}</span>
                   </div>
                 </div>
               </div>
@@ -262,7 +262,10 @@
               <!--<div class="rult-item">不允许举办派对和活动</div>-->
               <!--<div class="rult-item">15:00后可以随时入住</div>-->
               <a href="javascript:;" @click="PopShow">查看全部</a>
-              <PopUp :show.sync="popshow"></PopUp>
+              <PopUp :show.sync="popshow" :show-rules="showRules"
+                     :data="this.orderDate[0].guest_controls.p3_structured_house_rules"
+                     :other-rules="this.orderDate[0].additional_house_rules"
+              ></PopUp>
             </div>
           </div>
         </div>
@@ -307,7 +310,8 @@
         showmap: false,
         showcountry: false,
         popshow: false,
-        text: ''
+        text: '',
+        showRules: true
       };
     },
     methods: {

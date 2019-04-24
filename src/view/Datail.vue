@@ -44,11 +44,16 @@
                 </p>
               </div>
               <div class="popup fl">
-                <span><em></em></span>
-                <p>
-                  {{this.infoData.sectioned_description && this.infoData.sectioned_description.description}}
+                <p v-for="(items,indes) in this.infoData.sectioned_description && this.infoData.sectioned_description.summary.split('\n')"
+                   :key="indes"
+                >
+                  {{items}}
                 </p>
-                <a href="javascript:;" class="more">更多房源介绍</a>
+                <a href="javascript:;" class="more" @click="PopShow('about')"
+                   v-if="this.infoData.sectioned_description && this.infoData.sectioned_description.summary.split('\n').length > 1"
+                >
+                  更多房源介绍
+                </a>
               </div>
             </div>
             <div class="room-desc clearfix">
@@ -198,8 +203,14 @@
                     <a href="javascript:;">清除日期</a>
                   </div>
                 </div>
-                <div class="timer-box" style="height: 304px; background-color: pink;margin-bottom: 80px">
-
+                <div class="timer-box" style="margin-bottom: 80px">
+                  <el-date-picker
+                    v-model="value6"
+                    type="daterange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                  </el-date-picker>
                 </div>
               </div>
             </div>
@@ -210,22 +221,42 @@
                   <div class="item-title">
                     <span class="list">{{this.infoData.location_title}}</span>,
                   </div>
-                  <div class="item-text">
-                    <p>条条百年名路,梧桐繁茂｡排排历史建筑,岁月沧桑｡</p>
+                  <div class="item-text" v-if="this.infoData.sectioned_description && this.infoData.sectioned_description.neighborhood_overview">
+                    <!--<p>条条百年名路,梧桐繁茂｡排排历史建筑,岁月沧桑｡</p>-->
+                    <!--<p>{{this.infoData.sectioned_description && this.infoData.sectioned_description.neighborhood_overview}}</p>-->
+                    <p v-for="(items,indes) in this.infoData.sectioned_description && this.infoData.sectioned_description.neighborhood_overview.split('\n')"
+                       :key="indes"
+                    >
+                      {{items}}
+                    </p>
+                    <a href="javascript:;" class="more" @click="PopShow('city')"
+                       v-if="this.infoData.sectioned_description && this.infoData.sectioned_description.neighborhood_overview.split('\n').length > 1"
+                    >
+                      查看更多
+                    </a>
                   </div>
                 </div>
                 <div class="position-item">
                   <div class="item-title">
                     <span class="list">出行信息</span>
                   </div>
-                  <div class="item-text">
-                    <p>虹桥火车站/机场,地铁10线,25分钟可达｡</p>
-                    <p>浦东机场,地铁2转1线,1.5小时可达｡</p>
+                  <div class="item-text" v-if="this.infoData.sectioned_description && this.infoData.sectioned_description.transit">
+                    <!--<pre>{{this.infoData.sectioned_description && this.infoData.sectioned_description.transit}}</pre>-->
+                    <p v-for="(items,indes) in this.infoData.sectioned_description && this.infoData.sectioned_description.transit.split('\n')"
+                       :key="indes"
+                    >
+                      {{items}}
+                    </p>
+                    <a href="javascript:;" class="more" @click="PopShow('city')"
+                       v-if="this.infoData.sectioned_description && this.infoData.sectioned_description.transit.split('\n').length > 1"
+                    >
+                      查看更多
+                    </a>
                   </div>
                 </div>
               </div>
               <div class="map" style="height: 280px;background-color: pink;margin-bottom: 20px">
-
+                <el-amap vid="amap"></el-amap>
               </div>
               <div class="position-list">
                 <ul>
@@ -257,15 +288,13 @@
                     >
                       {{notice}}
                     </div>
-                    <!--<div class="text-item">-->
-                      <!--禁止吸烟、派对或活动-->
-                    <!--</div>-->
-                    <!--<div class="text-item">-->
-                      <!--15:00后可以随时入住，12:00前退房-->
-                    <!--</div>-->
                     <div class="rules">
-                      <a href="javascript:;" class="more">房屋守则</a>
+                      <a href="javascript:;" class="more" @click="PopShow('rules')">房屋守则</a>
                     </div>
+                    <!--<PopUp :show.sync="popshow" :show-rules="showRules" :show-city="showCity"-->
+                           <!--:data="this.infoData.guest_controls && this.infoData.guest_controls.p3_structured_house_rules"-->
+                           <!--:other-rules="this.infoData.additional_house_rules"-->
+                    <!--&gt;</PopUp>-->
                   </div>
                 </li>
                 <li class="list-item clearfix">
@@ -293,11 +322,11 @@
                 <div class="left-text fl">
                   <div class="name">{{this.infoData.primary_host && this.infoData.primary_host.host_name}} <a href="javascript:;" class="more">联系房东</a></div>
                   <div class="city-time">
-                    {{this.infoData.primary_host && this.infoData.primary_host.location_long}} ·
+                    <span v-if="this.infoData.primary_host && this.infoData.primary_host.location_long">{{this.infoData.primary_host && this.infoData.primary_host.location_long}} ·</span>
                     {{this.infoData.primary_host && this.infoData.primary_host.member_since_full_str}}
                   </div>
                   <div class="type clearfix">
-                    <div class="type-comment fl">
+                    <div class="type-comment fl" v-if="this.infoData.primary_host && this.infoData.primary_host.badges[0].count">
                       <span class="color">{{this.infoData.primary_host && this.infoData.primary_host.badges[0].count}}</span>
                       条评论
                     </div>
@@ -353,7 +382,8 @@
                     type="daterange"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
-                    default-value="2010-10-01">
+                    @change="changeTime"
+                  >
                   </el-date-picker>
                 </div>
               </div>
@@ -512,6 +542,14 @@
           </div>
         </div>
       </div>
+      <PopUp :show.sync="popshow" :show-city="showCity" :show-rules="showRules" :show-about="showAbout"
+             :city-title="this.infoData.location_title"
+             :city-data="this.infoData.sectioned_description && this.infoData.sectioned_description.neighborhood_overview"
+             :trip-time-data="this.infoData.sectioned_description && this.infoData.sectioned_description.transit"
+             :data="this.infoData.guest_controls && this.infoData.guest_controls.p3_structured_house_rules"
+             :other-rules="this.infoData.additional_house_rules"
+             :about-data="this.infoData.sectioned_description && this.infoData.sectioned_description.description"
+      ></PopUp>
     </div>
     <Footer></Footer>
   </div>
@@ -522,11 +560,12 @@
   import Footer from '../components/Footer';
   import ImageList from '../components/ImageList';
   import MovePlusList from '../components/MovePlusList';
+  import PopUp from '../components/PopUp';
   export default {
     name: 'Datail',
     props: ['id'],
     components: {
-      Header, Footer, ImageList, MovePlusList
+      Header, Footer, ImageList, MovePlusList, PopUp
     },
     data () {
       return {
@@ -541,10 +580,26 @@
         childrenCount: 0,
         babyCount: 0,
         babyAdd: null,
-        showNumberselect: false
+        showNumberselect: false,
+        popshow: false,
+        showRules: false,
+        showCity: false,
+        showAbout: false,
+        timeArray: []
       };
     },
     methods: {
+      changeTime () {
+        let data = this.value9;
+        for (let i = 0; i < data.length; i++) {
+          let year = data[i].getFullYear();
+          let month = data[i].getMonth() + 1;
+          let date = data[i].getDate();
+          let str = year + '年' + month + '月' + date + '日';
+          this.timeArray.push(str);
+        }
+        // console.log(this.timeArray);
+      },
       async getDatail () {
         const {data} = await this.axios.get(`/api/categoryList/${this.id}`);
         this.infoData = data;
@@ -605,11 +660,32 @@
           data: this.infoData,
           adultCount: this.adultCount,
           childrenCount: this.childrenCount,
-          babyCount: this.babyCount
+          babyCount: this.babyCount,
+          startTime: this.timeArray[0],
+          endTime: this.timeArray[1]
         });
         this.$router.push({
           name: 'Order'
         });
+      },
+      PopShow (str) {
+        if (str === 'rules') {
+          this.showRules = true;
+          this.showCity = false;
+          this.showAbout = false;
+        }
+        if (str === 'city') {
+          this.showCity = true;
+          this.showRules = false;
+          this.showAbout = false;
+        }
+        if (str === 'about') {
+          this.showAbout = true;
+          this.showRules = false;
+          this.showCity = false;
+        }
+        this.popshow = true;
+        // alert(111);
       }
     },
     mounted () {
@@ -795,6 +871,12 @@
             /*top:30px;*/
             /*left:30px;*/
             /*border:1px solid #333;*/
+            p{
+              display: none;
+              &:nth-of-type(1){
+                display: block;
+              }
+            }
             .more{
               display: inline-block;
               margin-top: 15px;
@@ -1026,6 +1108,12 @@
               }
             }
           }
+          .timer-box{
+            .el-date-editor--daterange.el-input__inner {
+              width: 310px;
+              margin-left: -50px;
+            }
+          }
         }
         .position{
           .position-title{
@@ -1047,6 +1135,26 @@
               .item-text{
                 font-size: 16px;
                 font-weight: normal;
+                .more{
+                  display: block;
+                  margin-top: 10px;
+                  color: #008489;
+                  font-weight: bolder;
+                  font-size: 16px;
+                }
+                p{
+                  display: none;
+                  /*!*&:not(:nth-of-type(1)){*!*/
+                    /*!*display: none;*!*/
+                  /*!*}*!*/
+                  &:nth-of-type(1),&:nth-of-type(3){
+                    display: block;
+                  }
+                  &:nth-of-type(2){
+                    margin-top: 20px;
+                    display: block;
+                  }
+                }
               }
             }
           }

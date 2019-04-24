@@ -46,10 +46,11 @@
   .goods-list{
 
     .goods-item{
-      width: 24%;
+      width: 25%;
       padding: 5px;
       box-sizing: border-box;
       margin-bottom: 15px;
+      height: 354px;
       /*margin-right: 20px;*/
       &:last-child{
         margin-right: 0;

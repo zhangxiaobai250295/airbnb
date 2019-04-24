@@ -112,15 +112,7 @@
             </div>
           </div>
           <div class="map fl" id="container">
-            <!--<el-amap class="amap-box" :vid="'amap-vue'"></el-amap>-->
-            <!--<el-amap ref="map" vid="amapDemo" :amap-manager="amapManager" :center="center" :zoom="zoom" :plugin="plugin" :events="events">-->
-            <!--</el-amap>-->
-            <el-amap
-              vid="amapDemo"
-              :center="center"
-              :zoom="zoom"
-              :events="events">
-            </el-amap>
+            <el-amap vid="amap"></el-amap>
           </div>
         </div>
       </div>
@@ -147,37 +139,12 @@
   export default {
     name: 'Category',
     data () {
-      let self = this;
       return {
         categoryData_1: [],
         categoryData_2: [],
         value4: true,
         showmap: false,
-        showFooter: false,
-        zoom: 12,
-        center: [121.59996, 31.197646],
-        address: '',
-        events: {
-          click (e) {
-            let { lng, lat } = e.lnglat;
-            self.lng = lng;
-            self.lat = lat;
-            var geocoder = new AMap.Geocoder({
-              radius: 1000,
-              extensions: 'all'
-            });
-            geocoder.getAddress([lng, lat], function (status, result) {
-              if (status === 'complete' && result.info === 'OK') {
-                if (result && result.regeocode) {
-                  self.address = result.regeocode.formattedAddress;
-                  self.$nextTick();
-                }
-              }
-            });
-          }
-        },
-        lng: 0,
-        lat: 0
+        showFooter: false
       };
     },
     components: {

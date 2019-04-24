@@ -81,6 +81,7 @@
     padding: 0 10px;
     box-sizing: border-box;
     margin-top: 20px;
+    height: 304px;
     .room-desc{
       color: rgb(118, 118, 118);
       font-size: 12px;
